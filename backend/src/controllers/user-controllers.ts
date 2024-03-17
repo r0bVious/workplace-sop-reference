@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/user.js";
 import { hash, compare } from "bcrypt";
+import { createToken } from "../utils/token-manager.js";
+import { COOKIE_NAME } from "../utils/constants.js";
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,17 +37,42 @@ const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, password } = req.body;
-    const existingUser = await User.findOne({ name });
-    if (!existingUser) {
+    const loggingInUser = await User.findOne({ name });
+    if (!loggingInUser) {
       return res.status(401).send("User does not exist.");
     }
-    const passwordCheck = await compare(password, existingUser.password);
+    const passwordCheck = await compare(password, loggingInUser.password);
     if (!passwordCheck) {
       return res.status(403).send("Password incorrect.");
     }
+
+    res.clearCookie(COOKIE_NAME, {
+      domain: "localhost",
+      httpOnly: true,
+      signed: true,
+      path: "/",
+    });
+
+    const newToken = createToken(
+      loggingInUser._id.toString(),
+      loggingInUser.name,
+      "7d"
+    );
+
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+
+    res.cookie(COOKIE_NAME, newToken, {
+      path: "/",
+      domain: "localhost",
+      expires,
+      httpOnly: true,
+      signed: true,
+    });
+
     return res
       .status(200)
-      .json({ message: "OK", id: existingUser._id.toString() });
+      .json({ message: "OK", id: loggingInUser._id.toString() });
   } catch (error) {
     console.log(error);
     return res.status(200).json({ message: "Error", cause: error.message });
