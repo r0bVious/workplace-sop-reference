@@ -1,9 +1,12 @@
-import express from "express";
+import app from "./app.js";
+import { connectToDatabase } from "./db/connection.js";
 
-const app = express();
-
-app.get("/ping", (req, res, next) => {
-  return res.send("pong");
-});
-
-app.listen(5000, () => console.log("Backend Server Open <3"));
+//connections and listeners
+const PORT = process.env.PORT || 5000;
+connectToDatabase()
+  .then(() => {
+    app.listen(PORT, () =>
+      console.log("Backend Server Open and MongoDB Connected <3")
+    );
+  })
+  .catch((error) => console.log(error));
