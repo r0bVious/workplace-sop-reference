@@ -1,4 +1,4 @@
 import { Router } from "express";
-const dataRoutes = Router();
-export default dataRoutes;
+const articleRoutes = Router();
+export default articleRoutes;
 //# sourceMappingURL=data-routes.js.map

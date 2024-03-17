@@ -1,1 +1,1 @@
-{"version":3,"file":"data-routes.js","sourceRoot":"","sources":["../../src/routes/data-routes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC,MAAM,UAAU,GAAG,MAAM,EAAE,CAAC;AAE5B,eAAe,UAAU,CAAC"}
+{"version":3,"file":"data-routes.js","sourceRoot":"","sources":["../../src/routes/data-routes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAEjC,MAAM,aAAa,GAAG,MAAM,EAAE,CAAC;AAE/B,eAAe,aAAa,CAAC"}
