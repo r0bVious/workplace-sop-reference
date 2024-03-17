@@ -1,5 +1,5 @@
 import User from "../models/user.js";
-import { hash } from "bcrypt";
+import { hash, compare } from "bcrypt";
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await User.find();
@@ -13,6 +13,9 @@ const getAllUsers = async (req, res, next) => {
 const signUpUser = async (req, res, next) => {
     try {
         const { name, position, password, admin_priv } = req.body;
+        const checkExistingUser = await User.findOne({ name });
+        if (checkExistingUser)
+            return res.status(401).send("User already exists.");
         const hashedPassword = await hash(password, 10);
         const newUser = new User({
             name,
@@ -28,5 +31,25 @@ const signUpUser = async (req, res, next) => {
         return res.status(200).json({ message: "Error", cause: error.message });
     }
 };
-export { getAllUsers, signUpUser };
+const loginUser = async (req, res, next) => {
+    try {
+        const { name, password } = req.body;
+        const existingUser = await User.findOne({ name });
+        if (!existingUser) {
+            return res.status(401).send("User does not exist.");
+        }
+        const passwordCheck = await compare(password, existingUser.password);
+        if (!passwordCheck) {
+            return res.status(403).send("Password incorrect.");
+        }
+        return res
+            .status(200)
+            .json({ message: "OK", id: existingUser._id.toString() });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(200).json({ message: "Error", cause: error.message });
+    }
+};
+export { getAllUsers, signUpUser, loginUser };
 //# sourceMappingURL=user-controllers.js.map

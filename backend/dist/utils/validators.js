@@ -14,10 +14,13 @@ const validate = (validations) => {
         return res.status(422).json({ errors: errors.array() });
     };
 };
-const signUpValidator = [
+const loginValidator = [
     body("name").notEmpty().withMessage("Username Required"),
-    body("position").notEmpty().withMessage("Classroom Assignment Required"),
     body("password").notEmpty().trim().withMessage("Password Required"),
+];
+const signUpValidator = [
+    body("position").notEmpty().withMessage("Classroom Assignment Required"),
+    ...loginValidator,
 ];
 const commentValidator = [
     body("comment_content")
@@ -35,5 +38,5 @@ const articleValidator = [
         .trim()
         .withMessage("Article Content Empty - Unable to Save Article"),
 ];
-export { signUpValidator, commentValidator, articleValidator, validate };
+export { signUpValidator, commentValidator, articleValidator, loginValidator, validate, };
 //# sourceMappingURL=validators.js.map

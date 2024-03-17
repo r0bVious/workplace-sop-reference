@@ -17,10 +17,14 @@ const validate = (validations: ValidationChain[]) => {
   };
 };
 
-const signUpValidator = [
+const loginValidator = [
   body("name").notEmpty().withMessage("Username Required"),
-  body("position").notEmpty().withMessage("Classroom Assignment Required"),
   body("password").notEmpty().trim().withMessage("Password Required"),
+];
+
+const signUpValidator = [
+  body("position").notEmpty().withMessage("Classroom Assignment Required"),
+  ...loginValidator,
 ];
 
 const commentValidator = [
@@ -41,4 +45,10 @@ const articleValidator = [
     .withMessage("Article Content Empty - Unable to Save Article"),
 ];
 
-export { signUpValidator, commentValidator, articleValidator, validate };
+export {
+  signUpValidator,
+  commentValidator,
+  articleValidator,
+  loginValidator,
+  validate,
+};
