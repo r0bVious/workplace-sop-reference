@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import Article from "../models/article.js";
+import Article from "../models/Article.js";
 
 const getArticle = async (req: Request, res: Response, next: NextFunction) => {
   //summon chosen article

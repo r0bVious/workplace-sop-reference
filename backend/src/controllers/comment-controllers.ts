@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import Comment from "../models/comment.js";
+import Comment from "../models/Comment.js";
 
 const getComments = async (req: Request, res: Response, next: NextFunction) => {
   //summon comments given the articleID given
