@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Hero from "../components/hero";
 import Login from "../components/login";
-import Datablock from "../components/datablock";
+import Article from "../components/article";
+import NavMenu from "../components/navigation/navmenu";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -10,16 +11,16 @@ function App() {
     <>
       {isLoggedIn ? (
         //true
-        //Map data -> 1 entry = 1 Datablock
         <>
           <p>You're logged in!</p>
-          <Datablock />
+          <Article />
         </>
       ) : (
         //false
         <>
           <Hero />
           <Login />
+          <NavMenu />
         </>
       )}
     </>
