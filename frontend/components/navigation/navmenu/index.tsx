@@ -1,9 +1,14 @@
 import NavButton from "../navbutton";
 import {
   Box,
-  Circle,
   useBreakpointValue,
   useDisclosure,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
@@ -42,59 +47,42 @@ const testData = [
 ];
 
 const NavMenu = () => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const drawerRef = useRef(null);
-
-  const handleClickOutsideDrawer = (event: MouseEvent) => {
-    if (drawerRef.current && !drawerRef.current.contains(event.target)) {
-      if (isOpen) {
-        onToggle();
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (isMobile && isOpen) {
-      window.addEventListener("click", handleClickOutsideDrawer);
-    }
-    return () => {
-      window.removeEventListener("click", handleClickOutsideDrawer);
-    };
-  }, [isMobile, isOpen]);
 
   return (
     <>
       {isMobile ? (
         <>
-          <Box
-            ref={drawerRef}
+          <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerHeader alignSelf="center">Articles</DrawerHeader>
+              <DrawerBody>
+                {testData.map((dataItem, index) => (
+                  <NavButton
+                    key={index}
+                    article_header={dataItem.article_header}
+                    onClick={onClose}
+                  />
+                ))}
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
+          <Button
+            colorScheme="blue"
+            onClick={onOpen}
             position="fixed"
             bottom="0"
-            left="0"
-            zIndex={10}
-            bg="blue.500"
-            w="100%"
-            h={isOpen ? "contentfit" : "5vh"}
-            overflow="hidden"
-            onClick={onToggle}
+            width="100%"
+            height="8vh"
+            fontSize="1.5rem"
           >
-            <motion.div
-              initial={{ y: "100%" }} // off-screen
-              animate={isOpen ? { y: "0%" } : { y: "100%" }}
-              transition={{ duration: 0.3 }}
-            >
-              {testData.map((dataItem, index) => (
-                <NavButton
-                  key={index}
-                  article_header={dataItem.article_header}
-                />
-              ))}
-            </motion.div>
-          </Box>
+            &#9776;
+          </Button>
         </>
       ) : (
-        <p>hi</p>
+        <p>hi, non-mobile setup here plz</p>
       )}
     </>
   );
