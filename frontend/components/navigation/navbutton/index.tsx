@@ -20,6 +20,4 @@ const NavButton = ({
   );
 };
 
-//this will be mapped over with existing sop data, maybe using the "article_header"
-
 export default NavButton;
