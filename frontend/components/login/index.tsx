@@ -6,13 +6,23 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
+import { toast } from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
+  const auth = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    //here login logic to backend
+  const handleSubmit = async () => {
+    try {
+      toast.loading("Logging In...", { id: "login" });
+      await auth?.login(username, password);
+      toast.success("Login Successful.", { id: "login" });
+    } catch (error) {
+      console.log("Error:", error);
+      toast.error("Login Failed.", { id: "login" });
+    }
   };
 
   return (
@@ -23,7 +33,9 @@ const Login = () => {
           value={username}
           type="text"
           placeholder="enter username..."
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
         />
         <FormLabel>Password</FormLabel>
         <Input
@@ -33,7 +45,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormControl>
-      <Button onClick={handleLogin}>Log-In</Button>
+      <Button onClick={handleSubmit}>Log-In</Button>
     </VStack>
   );
 };

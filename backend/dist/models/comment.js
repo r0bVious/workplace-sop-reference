@@ -14,4 +14,4 @@ const commentSchema = new mongoose.Schema({
     },
 });
 export default mongoose.model("Comment", commentSchema);
-//# sourceMappingURL=comment.js.map
+//# sourceMappingURL=Comment.js.map

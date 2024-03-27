@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: true,
     },
@@ -22,4 +22,4 @@ const userSchema = new mongoose.Schema({
     },
 });
 export default mongoose.model("User", userSchema);
-//# sourceMappingURL=user.js.map
+//# sourceMappingURL=User.js.map

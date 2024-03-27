@@ -1,13 +1,15 @@
-import { useState } from "react";
 import { useBreakpointValue } from "@chakra-ui/react";
 import Hero from "../components/hero";
 import Login from "../components/login";
 import Article from "../components/article";
 import MobileNavMenu from "../components/navigation/mobilenavmenu";
 import Header from "../components/navigation/desktopheader";
+import { useAuth } from "../context/AuthContext";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const auth = useAuth();
+  const isLoggedIn = auth?.isLoggedIn ?? false;
+  console.log("Logged In:", isLoggedIn);
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (

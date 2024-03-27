@@ -10,4 +10,4 @@ const articleSchema = new mongoose.Schema({
     },
 });
 export default mongoose.model("Article", articleSchema);
-//# sourceMappingURL=article.js.map
+//# sourceMappingURL=Article.js.map
