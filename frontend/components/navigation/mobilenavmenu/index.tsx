@@ -1,3 +1,4 @@
+import { logoutUser } from "../../../helpers/api-communicator.ts";
 import NavButton from "../navbutton";
 import {
   useDisclosure,
@@ -43,6 +44,12 @@ const testData = [
 
 const MobileNavMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const handleClick = async () => {
+    logoutUser();
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
 
   return (
     <>
@@ -59,6 +66,17 @@ const MobileNavMenu = () => {
               />
             ))}
           </DrawerBody>
+          <Button
+            colorScheme="green"
+            marginBottom="1rem"
+            onClick={handleClick}
+            width="90%"
+            alignSelf="center"
+            height="5vh"
+            fontSize="1.5rem"
+          >
+            Logout
+          </Button>
         </DrawerContent>
       </Drawer>
       <Button

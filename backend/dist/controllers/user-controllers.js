@@ -1,4 +1,4 @@
-import User from "../models/user.js";
+import User from "../models/User.js";
 import { hash, compare } from "bcrypt";
 import { createToken } from "../utils/token-manager.js";
 import { COOKIE_NAME } from "../utils/constants.js";
@@ -14,19 +14,41 @@ const getAllUsers = async (req, res, next) => {
 };
 const signUpUser = async (req, res, next) => {
     try {
-        const { name, position, password, admin_priv } = req.body;
-        const checkExistingUser = await User.findOne({ name });
+        const { username, position, password, admin_priv } = req.body;
+        const checkExistingUser = await User.findOne({ username });
         if (checkExistingUser)
             return res.status(401).send("User already exists.");
         const hashedPassword = await hash(password, 10);
         const newUser = new User({
-            name,
+            username,
             position,
             password: hashedPassword,
             admin_priv,
         });
         await newUser.save();
-        return res.status(201).json({ message: "OK", id: newUser._id.toString() });
+        return res.status(201).json({
+            message: "OK",
+            username: newUser.username,
+            position: newUser.position,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(200).json({ message: "Error", cause: error.message });
+    }
+};
+const verifyUser = async (req, res, next) => {
+    try {
+        const loggingInUser = await User.findById(res.locals.jwtData.id);
+        if (!loggingInUser) {
+            return res.status(401).send("User does not exist OR token error");
+        }
+        if (loggingInUser._id.toString() !== res.locals.jwtData.id) {
+            return res.status(401).send("Permissions mismatch");
+        }
+        return res
+            .status(200)
+            .json({ message: "OK", username: loggingInUser.username });
     }
     catch (error) {
         console.log(error);
@@ -35,8 +57,8 @@ const signUpUser = async (req, res, next) => {
 };
 const loginUser = async (req, res, next) => {
     try {
-        const { name, password } = req.body;
-        const loggingInUser = await User.findOne({ name });
+        const { username, password } = req.body;
+        const loggingInUser = await User.findOne({ username });
         if (!loggingInUser) {
             return res.status(401).send("User does not exist.");
         }
@@ -50,7 +72,7 @@ const loginUser = async (req, res, next) => {
             signed: true,
             path: "/",
         });
-        const newToken = createToken(loggingInUser._id.toString(), loggingInUser.name, "7d");
+        const newToken = createToken(loggingInUser._id.toString(), loggingInUser.username, "7d");
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
         res.cookie(COOKIE_NAME, newToken, {
@@ -62,12 +84,36 @@ const loginUser = async (req, res, next) => {
         });
         return res
             .status(200)
-            .json({ message: "OK", id: loggingInUser._id.toString() });
+            .json({ message: "OK", username: loggingInUser.username });
     }
     catch (error) {
         console.log(error);
         return res.status(200).json({ message: "Error", cause: error.message });
     }
 };
-export { getAllUsers, signUpUser, loginUser };
+const logoutUser = async (req, res, next) => {
+    try {
+        const loggingOutUser = await User.findById(res.locals.jwtData.id);
+        if (!loggingOutUser) {
+            return res.status(401).send("User does not exist OR token error");
+        }
+        if (loggingOutUser._id.toString() !== res.locals.jwtData.id) {
+            return res.status(401).send("Permissions mismatch");
+        }
+        res.clearCookie(COOKIE_NAME, {
+            domain: "localhost",
+            httpOnly: true,
+            signed: true,
+            path: "/",
+        });
+        return res
+            .status(200)
+            .json({ message: "OK", username: loggingOutUser.username });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(200).json({ message: "Error", cause: error.message });
+    }
+};
+export { getAllUsers, signUpUser, loginUser, verifyUser, logoutUser };
 //# sourceMappingURL=user-controllers.js.map

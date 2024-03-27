@@ -15,7 +15,7 @@ const validate = (validations) => {
     };
 };
 const loginValidator = [
-    body("name").notEmpty().withMessage("Username Required"),
+    body("username").notEmpty().withMessage("Username Required"),
     body("password").notEmpty().trim().withMessage("Password Required"),
 ];
 const signUpValidator = [

@@ -1,4 +1,4 @@
-import Article from "../models/article.js";
+import Article from "../models/Article.js";
 const getArticle = async (req, res, next) => {
     //summon chosen article
 };
