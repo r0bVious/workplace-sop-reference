@@ -1,20 +1,28 @@
 import { Button } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 
+interface NavButtonProps {
+  articleLink?: string;
+  articleHeader?: string;
+  articleContent?: string;
+  onClick?: (header: string, content: string) => void;
+}
+
 const NavButton = ({
-  article_link = "/test-link",
-  article_header = "test-content",
+  articleLink = "/test-link",
+  articleHeader = "test-header",
+  articleContent = "test-content",
   onClick,
-}) => {
+}: NavButtonProps) => {
   const handleClick = () => {
     if (onClick) {
-      onClick();
+      onClick(articleHeader, articleContent);
     }
   };
   return (
-    <ReactRouterLink to={article_link} onClick={handleClick}>
+    <ReactRouterLink to={articleLink} onClick={handleClick}>
       <Button mx="1rem" my="0.5rem">
-        {article_header}
+        {articleHeader}
       </Button>
     </ReactRouterLink>
   );

@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { getArticle, newArticle } from "../controllers/article-controllers.js";
+import {
+  getAllArticles,
+  newArticle,
+} from "../controllers/article-controllers.js";
 import { articleValidator, validate } from "../utils/validators.js";
 
 const articleRoutes = Router();
 
-articleRoutes.get("/" /*WHAT DO*/);
-articleRoutes.get("/article", getArticle);
+articleRoutes.get("/", getAllArticles);
 articleRoutes.post("/newarticle", validate(articleValidator), newArticle);
 
 export default articleRoutes;

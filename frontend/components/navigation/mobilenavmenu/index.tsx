@@ -12,32 +12,32 @@ import {
 
 const testData = [
   {
-    article_header: "IEP Tests",
-    article_content: "IEP Tests are tests bro",
+    articleHeader: "IEP Tests",
+    articleContent: "IEP Tests are tests bro",
   },
   {
-    article_header: "Lesson Plans",
-    article_content:
+    articleHeader: "Lesson Plans",
+    articleContent:
       "Content2Content2Content2Content2Content2Content2Content2Content2",
   },
   {
-    article_header: "Header3",
-    article_content:
+    articleHeader: "Header3",
+    articleContent:
       "Content3Content3Content3Content3Content3Content3Content3Content3",
   },
   {
-    article_header: "Header3",
-    article_content:
+    articleHeader: "Header3",
+    articleContent:
       "Content3Content3Content3Content3Content3Content3Content3Content3",
   },
   {
-    article_header: "Header3",
-    article_content:
+    articleHeader: "Header3",
+    articleContent:
       "Content3Content3Content3Content3Content3Content3Content3Content3",
   },
   {
-    article_header: "Header3",
-    article_content:
+    articleHeader: "Header3",
+    articleContent:
       "Content3Content3Content3Content3Content3Content3Content3Content3",
   },
 ];
@@ -51,6 +51,10 @@ const MobileNavMenu = () => {
     }, 500);
   };
 
+  const handleNavButtonClick = () => {
+    onClose();
+  };
+
   return (
     <>
       <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
@@ -58,11 +62,12 @@ const MobileNavMenu = () => {
         <DrawerContent>
           <DrawerHeader alignSelf="center">Articles</DrawerHeader>
           <DrawerBody>
-            {testData.map((dataItem, index) => (
+            {testData.map((testData, index) => (
               <NavButton
                 key={index}
-                article_header={dataItem.article_header}
-                onClick={onClose}
+                articleHeader={testData.articleHeader}
+                articleContent={testData.articleContent}
+                onClick={handleNavButtonClick}
               />
             ))}
           </DrawerBody>

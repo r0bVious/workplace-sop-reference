@@ -27,4 +27,13 @@ const logoutUser = async () => {
   return data;
 };
 
-export { loginUser, checkAuthStatus, logoutUser };
+const getArticles = async () => {
+  const res = await axios.get("/articles");
+  if (res.status !== 200) {
+    throw new Error("Unable to retrieve articles");
+  }
+  const data = await res.data;
+  return data;
+};
+
+export { loginUser, checkAuthStatus, logoutUser, getArticles };

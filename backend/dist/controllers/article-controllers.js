@@ -1,6 +1,13 @@
 import Article from "../models/Article.js";
-const getArticle = async (req, res, next) => {
-    //summon chosen article
+const getAllArticles = async (req, res, next) => {
+    try {
+        const users = await Article.find();
+        return res.status(200).json({ message: "OK", users });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(200).json({ message: "Error", cause: error.message });
+    }
 };
 const newArticle = async (req, res, next) => {
     try {
@@ -19,5 +26,5 @@ const newArticle = async (req, res, next) => {
         return res.status(200).json({ message: "Error", cause: error.message });
     }
 };
-export { getArticle, newArticle };
+export { getAllArticles, newArticle };
 //# sourceMappingURL=article-controllers.js.map

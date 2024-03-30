@@ -1,8 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 import Article from "../models/Article.js";
 
-const getArticle = async (req: Request, res: Response, next: NextFunction) => {
-  //summon chosen article
+const getAllArticles = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await Article.find();
+    return res.status(200).json({ message: "OK", users });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "Error", cause: error.message });
+  }
 };
 
 const newArticle = async (req: Request, res: Response, next: NextFunction) => {
@@ -22,4 +32,4 @@ const newArticle = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { getArticle, newArticle };
+export { getAllArticles, newArticle };
