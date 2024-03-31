@@ -19,16 +19,18 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/articles");
-        setArticles(response.data.articles);
-        console.log(response.data);
+        if (isLoggedIn) {
+          const response = await axios.get("/articles");
+          setArticles(response.data.articles);
+          console.log(response.data);
+        }
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
     };
 
     fetchData(); // Call the fetchData function when the component mounts
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <>
