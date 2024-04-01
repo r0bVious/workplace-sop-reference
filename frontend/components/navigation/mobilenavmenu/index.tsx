@@ -10,48 +10,16 @@ import {
   DrawerContent,
 } from "@chakra-ui/react";
 
-const testData = [
-  {
-    articleHeader: "IEP Tests",
-    articleContent: "IEP Tests are tests bro",
-  },
-  {
-    articleHeader: "Lesson Plans",
-    articleContent:
-      "Content2Content2Content2Content2Content2Content2Content2Content2",
-  },
-  {
-    articleHeader: "Header3",
-    articleContent:
-      "Content3Content3Content3Content3Content3Content3Content3Content3",
-  },
-  {
-    articleHeader: "Header3",
-    articleContent:
-      "Content3Content3Content3Content3Content3Content3Content3Content3",
-  },
-  {
-    articleHeader: "Header3",
-    articleContent:
-      "Content3Content3Content3Content3Content3Content3Content3Content3",
-  },
-  {
-    articleHeader: "Header3",
-    articleContent:
-      "Content3Content3Content3Content3Content3Content3Content3Content3",
-  },
-];
-
-const MobileNavMenu = () => {
+const MobileNavMenu = ({ articles, handleNavButtonClick }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const handleClick = async () => {
+  const handleLogOutClick = async () => {
     logoutUser();
     setTimeout(() => {
       window.location.reload();
     }, 500);
   };
 
-  const handleNavButtonClick = () => {
+  const handleCloseDrawer = () => {
     onClose();
   };
 
@@ -61,20 +29,25 @@ const MobileNavMenu = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader alignSelf="center">Articles</DrawerHeader>
-          <DrawerBody>
-            {testData.map((testData, index) => (
+          <DrawerBody
+            display="grid"
+            gridTemplateColumns="repeat(3, 1fr)"
+            gap="1rem"
+          >
+            {articles.map((article, index) => (
               <NavButton
                 key={index}
-                articleHeader={testData.articleHeader}
-                articleContent={testData.articleContent}
+                articleHeader={article.article_header}
+                articleContent={article.article_content}
                 onClick={handleNavButtonClick}
+                onCloseDrawer={handleCloseDrawer}
               />
             ))}
           </DrawerBody>
           <Button
             colorScheme="green"
             marginBottom="1rem"
-            onClick={handleClick}
+            onClick={handleLogOutClick}
             width="90%"
             alignSelf="center"
             height="5vh"

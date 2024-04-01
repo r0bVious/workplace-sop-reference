@@ -13,7 +13,7 @@ const Article = ({
   return (
     <Card>
       <CardHeader>{articleHeader}</CardHeader>
-      <CardBody>{articleContent}</CardBody>
+      <CardBody dangerouslySetInnerHTML={{ __html: articleContent }} />
       <CardFooter display="flex" flexDirection="column">
         <p>Display Comments Here</p>
         <Button>Add Comment</Button>

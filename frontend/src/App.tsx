@@ -1,7 +1,7 @@
 import { useBreakpointValue } from "@chakra-ui/react";
 import Hero from "../components/hero";
-import Login from "../components/login";
 import Article from "../components/article";
+import Login from "../components/login";
 import MobileNavMenu from "../components/navigation/mobilenavmenu";
 import Header from "../components/navigation/desktopheader";
 import { useAuth } from "../context/AuthContext";
@@ -15,21 +15,30 @@ function App() {
   console.log("Logged In:", isLoggedIn);
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [articles, setArticles] = useState([]);
+  const [displayArticle, setDisplayArticle] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState({
+    articleHeader: "",
+    articleContent: "",
+  });
+
+  const handleNavButtonClick = (articleHeader, articleContent) => {
+    setSelectedArticle({ articleHeader, articleContent });
+    setDisplayArticle(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (isLoggedIn) {
-          const response = await axios.get("/articles");
-          setArticles(response.data.articles);
-          console.log(response.data);
-        }
+        const response = await axios.get("/articles");
+        setArticles(response.data.articles);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
     };
 
-    fetchData(); // Call the fetchData function when the component mounts
+    if (isLoggedIn) {
+      fetchData();
+    } // Call the fetchData function when the component mounts
   }, [isLoggedIn]);
 
   return (
@@ -37,8 +46,22 @@ function App() {
       {isLoggedIn ? (
         //true
         <>
-          {isMobile ? <MobileNavMenu /> : <Header />}
-          <Landing />
+          {displayArticle ? (
+            <Article
+              articleHeader={selectedArticle.articleHeader}
+              articleContent={selectedArticle.articleContent}
+            />
+          ) : (
+            <Landing />
+          )}
+          {isMobile ? (
+            <MobileNavMenu
+              articles={articles}
+              handleNavButtonClick={handleNavButtonClick}
+            />
+          ) : (
+            <Header />
+          )}
         </>
       ) : (
         //false

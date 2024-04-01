@@ -29,10 +29,10 @@ const commentValidator = [
         .withMessage("Comment Field Empty - Unable to Save Comment"),
 ];
 const articleValidator = [
-    body("article_content")
+    body("article_header")
         .notEmpty()
         .trim()
-        .withMessage("Article Content Empty - Unable to Save Article"),
+        .withMessage("Article Header Empty - Unable to Save Article"),
     body("article_content")
         .notEmpty()
         .trim()

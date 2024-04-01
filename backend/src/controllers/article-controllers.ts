@@ -7,8 +7,8 @@ const getAllArticles = async (
   next: NextFunction
 ) => {
   try {
-    const users = await Article.find();
-    return res.status(200).json({ message: "OK", users });
+    const articles = await Article.find();
+    return res.status(200).json({ message: "OK", articles });
   } catch (error) {
     console.log(error);
     return res.status(200).json({ message: "Error", cause: error.message });

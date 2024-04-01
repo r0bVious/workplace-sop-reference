@@ -1,8 +1,8 @@
 import Article from "../models/Article.js";
 const getAllArticles = async (req, res, next) => {
     try {
-        const users = await Article.find();
-        return res.status(200).json({ message: "OK", users });
+        const articles = await Article.find();
+        return res.status(200).json({ message: "OK", articles });
     }
     catch (error) {
         console.log(error);
