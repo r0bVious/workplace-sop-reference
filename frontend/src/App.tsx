@@ -12,7 +12,9 @@ import axios from "axios";
 function App() {
   const auth = useAuth();
   const isLoggedIn = auth?.isLoggedIn ?? false;
+  const isAdmin = auth?.isAdmin ?? false;
   console.log("Logged In:", isLoggedIn);
+  console.log("Admin:", isAdmin);
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [articles, setArticles] = useState([]);
   const [displayArticle, setDisplayArticle] = useState(false);
@@ -20,6 +22,7 @@ function App() {
     articleHeader: "",
     articleContent: "",
   });
+  const [comments, setComments] = useState([]);
 
   const handleNavButtonClick = (articleHeader, articleContent) => {
     setSelectedArticle({ articleHeader, articleContent });
@@ -31,6 +34,9 @@ function App() {
       try {
         const response = await axios.get("/articles");
         setArticles(response.data.articles);
+        console.log("Articles", response.data.articles);
+        setComments(response.data.comments);
+        console.log("Comments", response.data.comments);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
@@ -50,6 +56,7 @@ function App() {
             <Article
               articleHeader={selectedArticle.articleHeader}
               articleContent={selectedArticle.articleContent}
+              comments={comments}
             />
           ) : (
             <Landing />

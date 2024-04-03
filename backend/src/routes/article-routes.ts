@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  getAllArticles,
+  getAllArticlesWithComments,
   newArticle,
 } from "../controllers/article-controllers.js";
 import { articleValidator, validate } from "../utils/validators.js";
@@ -8,7 +8,7 @@ import { verifyToken } from "../utils/token-manager.js";
 
 const articleRoutes = Router();
 
-articleRoutes.get("/", getAllArticles);
+articleRoutes.get("/", getAllArticlesWithComments);
 articleRoutes.post(
   "/newarticle",
   verifyToken,

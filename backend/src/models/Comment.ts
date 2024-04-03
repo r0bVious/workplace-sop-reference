@@ -5,12 +5,12 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  article_id: {
-    type: Number,
+  article_header: {
+    type: String,
     required: true,
   },
-  creator_id: {
-    type: Number,
+  username: {
+    type: String,
     required: true,
   },
 });

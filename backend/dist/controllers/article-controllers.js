@@ -1,8 +1,10 @@
 import Article from "../models/Article.js";
-const getAllArticles = async (req, res, next) => {
+import Comment from "../models/Comment.js";
+const getAllArticlesWithComments = async (req, res, next) => {
     try {
         const articles = await Article.find();
-        return res.status(200).json({ message: "OK", articles });
+        const comments = await Comment.find();
+        return res.status(200).json({ message: "OK", articles, comments });
     }
     catch (error) {
         console.log(error);
@@ -26,5 +28,5 @@ const newArticle = async (req, res, next) => {
         return res.status(200).json({ message: "Error", cause: error.message });
     }
 };
-export { getAllArticles, newArticle };
+export { getAllArticlesWithComments, newArticle };
 //# sourceMappingURL=article-controllers.js.map

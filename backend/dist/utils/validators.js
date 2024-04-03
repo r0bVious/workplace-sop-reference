@@ -27,6 +27,8 @@ const commentValidator = [
         .notEmpty()
         .trim()
         .withMessage("Comment Field Empty - Unable to Save Comment"),
+    body("article_header").notEmpty(),
+    body("username").notEmpty(),
 ];
 const articleValidator = [
     body("article_header")

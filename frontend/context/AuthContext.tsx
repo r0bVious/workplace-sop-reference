@@ -19,6 +19,7 @@ type User = {
 
 type UserAuth = {
   isLoggedIn: boolean;
+  isAdmin: boolean;
   user: User | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -28,13 +29,18 @@ const AuthContext = createContext<UserAuth | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     async function checkStatus() {
       const data = await checkAuthStatus();
+      console.log("Auth Context check", data);
       if (data) {
         setUser({ username: data.username });
         setIsLoggedIn(true);
+        if (data.admin_priv) {
+          setIsAdmin(true);
+        }
       }
     }
     checkStatus();
@@ -45,6 +51,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (data) {
       setUser({ username: data.username });
       setIsLoggedIn(true);
+      if (data.admin_priv) {
+        setIsAdmin(true);
+      }
     }
   };
 
@@ -59,6 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value = {
     user,
     isLoggedIn,
+    isAdmin,
     login,
     logout,
     signup,

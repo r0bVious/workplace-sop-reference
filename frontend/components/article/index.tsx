@@ -5,18 +5,26 @@ import {
   CardFooter,
   Button,
 } from "@chakra-ui/react";
+import CommentForm from "../comment-form";
 
 const Article = ({
   articleHeader = "Header Text",
   articleContent = "Content Text",
+  comments = [
+    { comment_content: "This text appears if there is no comments data" },
+  ],
 }) => {
+  //Because your data is coming in formatted by HTML, manually style it here
+  const articleStyles = { h3: { fontWeight: "bold", fontSize: "1.5rem" } };
+
   return (
-    <Card>
-      <CardHeader>{articleHeader}</CardHeader>
+    <Card sx={articleStyles}>
+      <CardHeader fontWeight="bold" fontSize="1.8rem">
+        {articleHeader}
+      </CardHeader>
       <CardBody dangerouslySetInnerHTML={{ __html: articleContent }} />
       <CardFooter display="flex" flexDirection="column">
-        <p>Display Comments Here</p>
-        <Button>Add Comment</Button>
+        <CommentForm comments={comments} />
       </CardFooter>
     </Card>
   );

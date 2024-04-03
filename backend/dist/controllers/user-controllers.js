@@ -46,9 +46,11 @@ const verifyUser = async (req, res, next) => {
         if (loggingInUser._id.toString() !== res.locals.jwtData.id) {
             return res.status(401).send("Permissions mismatch");
         }
-        return res
-            .status(200)
-            .json({ message: "OK", username: loggingInUser.username });
+        return res.status(200).json({
+            message: "OK",
+            username: loggingInUser.username,
+            admin_priv: loggingInUser.admin_priv,
+        });
     }
     catch (error) {
         console.log(error);
@@ -84,7 +86,11 @@ const loginUser = async (req, res, next) => {
         });
         return res
             .status(200)
-            .json({ message: "OK", username: loggingInUser.username });
+            .json({
+            message: "OK",
+            username: loggingInUser.username,
+            admin_priv: loggingInUser.admin_priv,
+        });
     }
     catch (error) {
         console.log(error);
