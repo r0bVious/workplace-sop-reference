@@ -23,19 +23,19 @@ const signUpValidator = [
     ...loginValidator,
 ];
 const commentValidator = [
-    body("comment_content")
+    body("commentContent")
         .notEmpty()
         .trim()
         .withMessage("Comment Field Empty - Unable to Save Comment"),
-    body("article_header").notEmpty(),
+    body("articleHeader").notEmpty(),
     body("username").notEmpty(),
 ];
 const articleValidator = [
-    body("article_header")
+    body("articleHeader")
         .notEmpty()
         .trim()
         .withMessage("Article Header Empty - Unable to Save Article"),
-    body("article_content")
+    body("articleContent")
         .notEmpty()
         .trim()
         .withMessage("Article Content Empty - Unable to Save Article"),

@@ -1,16 +1,20 @@
 import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
-  comment_content: {
+  commentContent: {
     type: String,
     required: true,
   },
-  article_header: {
+  articleHeader: {
     type: String,
     required: true,
   },
   username: {
     type: String,
+    required: true,
+  },
+  dateCreated: {
+    type: Date,
     required: true,
   },
 });

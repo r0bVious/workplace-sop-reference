@@ -37,8 +37,8 @@ const MobileNavMenu = ({ articles, handleNavButtonClick }) => {
             {articles.map((article, index) => (
               <NavButton
                 key={index}
-                articleHeader={article.article_header}
-                articleContent={article.article_content}
+                articleHeader={article.articleHeader}
+                articleContent={article.articleContent}
                 onClick={handleNavButtonClick}
                 onCloseDrawer={handleCloseDrawer}
               />

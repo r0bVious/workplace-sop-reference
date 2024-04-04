@@ -13,10 +13,10 @@ const getAllArticlesWithComments = async (req, res, next) => {
 };
 const newArticle = async (req, res, next) => {
     try {
-        const { article_header, article_content } = req.body;
+        const { articleHeader, articleContent } = req.body;
         const newArticle = new Article({
-            article_header,
-            article_content,
+            articleHeader,
+            articleContent,
         });
         await newArticle.save();
         return res

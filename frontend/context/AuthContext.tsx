@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (data) {
         setUser({ username: data.username });
         setIsLoggedIn(true);
-        if (data.admin_priv) {
+        if (data.adminPriv) {
           setIsAdmin(true);
         }
       }
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (data) {
       setUser({ username: data.username });
       setIsLoggedIn(true);
-      if (data.admin_priv) {
+      if (data.adminPriv) {
         setIsAdmin(true);
       }
     }

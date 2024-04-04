@@ -16,7 +16,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
 
 const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, position, password, admin_priv } = req.body;
+    const { username, position, password, adminPriv } = req.body;
     const checkExistingUser = await User.findOne({ username });
     if (checkExistingUser) return res.status(401).send("User already exists.");
     const hashedPassword = await hash(password, 10);
@@ -24,7 +24,7 @@ const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
       username,
       position,
       password: hashedPassword,
-      admin_priv,
+      adminPriv,
     });
     await newUser.save();
     return res.status(201).json({
@@ -50,7 +50,7 @@ const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({
       message: "OK",
       username: loggingInUser.username,
-      admin_priv: loggingInUser.admin_priv,
+      admin_priv: loggingInUser.adminPriv,
     });
   } catch (error) {
     console.log(error);
@@ -94,13 +94,11 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
       signed: true,
     });
 
-    return res
-      .status(200)
-      .json({
-        message: "OK",
-        username: loggingInUser.username,
-        admin_priv: loggingInUser.admin_priv,
-      });
+    return res.status(200).json({
+      message: "OK",
+      username: loggingInUser.username,
+      admin_priv: loggingInUser.adminPriv,
+    });
   } catch (error) {
     console.log(error);
     return res.status(200).json({ message: "Error", cause: error.message });

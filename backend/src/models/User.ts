@@ -13,11 +13,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  admin_priv: {
+  adminPriv: {
     type: Boolean,
     required: true,
   },
-  date_created: {
+  dateCreated: {
     type: Date,
     default: Date.now,
   },

@@ -14,7 +14,7 @@ const getAllUsers = async (req, res, next) => {
 };
 const signUpUser = async (req, res, next) => {
     try {
-        const { username, position, password, admin_priv } = req.body;
+        const { username, position, password, adminPriv } = req.body;
         const checkExistingUser = await User.findOne({ username });
         if (checkExistingUser)
             return res.status(401).send("User already exists.");
@@ -23,7 +23,7 @@ const signUpUser = async (req, res, next) => {
             username,
             position,
             password: hashedPassword,
-            admin_priv,
+            adminPriv,
         });
         await newUser.save();
         return res.status(201).json({
@@ -49,7 +49,7 @@ const verifyUser = async (req, res, next) => {
         return res.status(200).json({
             message: "OK",
             username: loggingInUser.username,
-            admin_priv: loggingInUser.admin_priv,
+            admin_priv: loggingInUser.adminPriv,
         });
     }
     catch (error) {
@@ -84,12 +84,10 @@ const loginUser = async (req, res, next) => {
             httpOnly: true,
             signed: true,
         });
-        return res
-            .status(200)
-            .json({
+        return res.status(200).json({
             message: "OK",
             username: loggingInUser.username,
-            admin_priv: loggingInUser.admin_priv,
+            admin_priv: loggingInUser.adminPriv,
         });
     }
     catch (error) {

@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 const articleSchema = new mongoose.Schema({
-    article_header: {
+    articleHeader: {
         type: String,
         required: true,
     },
-    article_content: {
+    articleContent: {
         type: String,
         required: true,
     },
