@@ -13,8 +13,8 @@ function App() {
   const auth = useAuth();
   const isLoggedIn = auth?.isLoggedIn ?? false;
   const isAdmin = auth?.isAdmin ?? false;
-  console.log("Logged In:", isLoggedIn);
-  console.log("Admin:", isAdmin);
+  console.log("App Logged In:", isLoggedIn);
+  console.log("App Admin check:", isAdmin);
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [articles, setArticles] = useState([]);
   const [displayArticle, setDisplayArticle] = useState(false);

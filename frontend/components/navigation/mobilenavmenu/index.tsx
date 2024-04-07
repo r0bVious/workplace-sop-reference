@@ -1,3 +1,4 @@
+import { useAuth } from "../../../context/AuthContext.tsx";
 import { logoutUser } from "../../../helpers/api-communicator.ts";
 import NavButton from "../navbutton";
 import {
@@ -8,9 +9,13 @@ import {
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
+  Box,
 } from "@chakra-ui/react";
+import AdminModal from "../../admin-modal";
 
-const MobileNavMenu = ({ articles, handleNavButtonClick }) => {
+const MobileNavMenu = ({ articles, handleNavButtonClick, employeeMenu }) => {
+  const isAdmin = useAuth()?.isAdmin;
+  console.log("Navmenu admin check:", isAdmin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleLogOutClick = async () => {
     logoutUser();
@@ -44,17 +49,19 @@ const MobileNavMenu = ({ articles, handleNavButtonClick }) => {
               />
             ))}
           </DrawerBody>
-          <Button
-            colorScheme="green"
-            marginBottom="1rem"
-            onClick={handleLogOutClick}
-            width="90%"
-            alignSelf="center"
-            height="5vh"
-            fontSize="1.5rem"
-          >
-            Logout
-          </Button>
+          <Box display="flex" justifyContent={"center"} paddingX={5}>
+            <Button
+              colorScheme="red"
+              marginBottom="1rem"
+              onClick={handleLogOutClick}
+              width="90%"
+              height="5vh"
+              fontSize="1.5rem"
+            >
+              Logout
+            </Button>
+            {isAdmin ? <AdminModal employeeMenu={employeeMenu} /> : null}
+          </Box>
         </DrawerContent>
       </Drawer>
       <Button

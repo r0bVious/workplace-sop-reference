@@ -50,7 +50,7 @@ const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({
       message: "OK",
       username: loggingInUser.username,
-      admin_priv: loggingInUser.adminPriv,
+      adminPriv: loggingInUser.adminPriv,
     });
   } catch (error) {
     console.log(error);
@@ -97,7 +97,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).json({
       message: "OK",
       username: loggingInUser.username,
-      admin_priv: loggingInUser.adminPriv,
+      adminPriv: loggingInUser.adminPriv,
     });
   } catch (error) {
     console.log(error);

@@ -36,4 +36,23 @@ const getArticles = async () => {
   return data;
 };
 
-export { loginUser, checkAuthStatus, logoutUser, getArticles };
+const newComment = async (
+  username: String,
+  articleHeader: String,
+  commentContent: String,
+  dateCreated: Date
+) => {
+  const res = await axios.post("/comments/newcomment", {
+    username,
+    articleHeader,
+    commentContent,
+    dateCreated,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to send comment");
+  }
+  const data = await res.data;
+  return data;
+};
+
+export { loginUser, checkAuthStatus, logoutUser, getArticles, newComment };

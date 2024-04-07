@@ -19,12 +19,12 @@ import Comment from "../models/Comment.js";
 const newComment = async (req: Request, res: Response, next: NextFunction) => {
   //save new comment according to given articleID
   try {
-    const { username, commentContent, articleHeader, adminPriv } = req.body;
+    const { username, articleHeader, commentContent, dateCreated } = req.body;
     const newComment = new Comment({
       username,
+      articleHeader,
       commentContent,
-      articleHeader, //maybe this should be the article id, though it might be nice to be so obvious in the db given that this project is fairly static
-      adminPriv,
+      dateCreated,
     });
     await newComment.save();
     return res

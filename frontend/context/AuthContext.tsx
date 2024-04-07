@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoggedIn(true);
       if (data.adminPriv) {
         setIsAdmin(true);
+        console.log("Admin setting to true...");
       }
     }
   };
@@ -63,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await logoutUser();
     setIsLoggedIn(false);
     setUser(null);
+    setIsAdmin(false);
   };
 
   const value = {
