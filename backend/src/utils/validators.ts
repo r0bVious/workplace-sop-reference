@@ -22,7 +22,7 @@ const loginValidator = [
   body("password").notEmpty().trim().withMessage("Password Required"),
 ];
 
-const signUpValidator = [
+const createUserValidator = [
   body("position").notEmpty().withMessage("Classroom Assignment Required"),
   ...loginValidator,
 ];
@@ -48,7 +48,7 @@ const articleValidator = [
 ];
 
 export {
-  signUpValidator,
+  createUserValidator,
   commentValidator,
   articleValidator,
   loginValidator,

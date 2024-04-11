@@ -12,7 +12,7 @@ const getAllUsers = async (req, res, next) => {
         return res.status(200).json({ message: "Error", cause: error.message });
     }
 };
-const signUpUser = async (req, res, next) => {
+const createUser = async (req, res, next) => {
     try {
         const { username, position, password, adminPriv } = req.body;
         const checkExistingUser = await User.findOne({ username });
@@ -30,6 +30,22 @@ const signUpUser = async (req, res, next) => {
             message: "OK",
             username: newUser.username,
             position: newUser.position,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(200).json({ message: "Error", cause: error.message });
+    }
+};
+const deleteUser = async (req, res, next) => {
+    try {
+        const { _id } = req.body;
+        const existingUser = await User.findOne({ _id });
+        if (!existingUser)
+            return res.status(401).send("User doesn't exist.");
+        await existingUser.deleteOne();
+        return res.status(200).json({
+            message: "OK",
         });
     }
     catch (error) {
@@ -119,5 +135,5 @@ const logoutUser = async (req, res, next) => {
         return res.status(200).json({ message: "Error", cause: error.message });
     }
 };
-export { getAllUsers, signUpUser, loginUser, verifyUser, logoutUser };
+export { getAllUsers, createUser, loginUser, verifyUser, logoutUser, deleteUser, };
 //# sourceMappingURL=user-controllers.js.map

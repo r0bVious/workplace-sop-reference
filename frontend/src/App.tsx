@@ -7,14 +7,13 @@ import Header from "../components/navigation/desktopheader";
 import { useAuth } from "../context/AuthContext";
 import Landing from "../components/landing";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import ArticleEditor from "../components/article-editor";
+import UserEditor from "../components/user-editor";
+import { getArticles } from "../helpers/api-communicator.ts";
 
 function App() {
   const auth = useAuth();
   const isLoggedIn = auth?.isLoggedIn ?? false;
-  const isAdmin = auth?.isAdmin ?? false;
-  console.log("App Logged In:", isLoggedIn);
-  console.log("App Admin check:", isAdmin);
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [articles, setArticles] = useState([]);
   const [displayArticle, setDisplayArticle] = useState(false);
@@ -23,20 +22,23 @@ function App() {
     articleContent: "",
   });
   const [comments, setComments] = useState([]);
+  const [adminMode, setAdminMode] = useState(null);
 
   const handleNavButtonClick = (articleHeader, articleContent) => {
     setSelectedArticle({ articleHeader, articleContent });
     setDisplayArticle(true);
   };
 
+  const handleAdminModeChange = (mode) => {
+    setAdminMode(mode);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/articles");
-        setArticles(response.data.articles);
-        console.log("Articles", response.data.articles);
-        setComments(response.data.comments);
-        console.log("Comments", response.data.comments);
+        const response = await getArticles();
+        setArticles(response.articles);
+        setComments(response.comments);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
@@ -49,32 +51,45 @@ function App() {
 
   return (
     <>
-      {isLoggedIn ? (
-        //true
-        <>
-          {displayArticle ? (
-            <Article
-              articleHeader={selectedArticle.articleHeader}
-              articleContent={selectedArticle.articleContent}
-              comments={comments}
-            />
-          ) : (
-            <Landing />
-          )}
-          {isMobile ? (
-            <MobileNavMenu
-              articles={articles}
-              handleNavButtonClick={handleNavButtonClick}
-            />
-          ) : (
-            <Header />
-          )}
-        </>
+      {isLoggedIn && adminMode ? (
+        adminMode === "articles" ? (
+          <ArticleEditor handleAdminModeChange={handleAdminModeChange} />
+        ) : (
+          <UserEditor handleAdminModeChange={handleAdminModeChange} />
+        )
       ) : (
-        //false
         <>
-          <Hero />
-          <Login />
+          {isLoggedIn ? (
+            //true
+            <>
+              {displayArticle ? (
+                <Article
+                  articleHeader={selectedArticle.articleHeader}
+                  articleContent={selectedArticle.articleContent}
+                  comments={comments}
+                />
+              ) : (
+                <>
+                  <Landing />
+                </>
+              )}
+              {isMobile ? (
+                <MobileNavMenu
+                  articles={articles}
+                  handleNavButtonClick={handleNavButtonClick}
+                  handleAdminModeChange={setAdminMode}
+                />
+              ) : (
+                <Header />
+              )}
+            </>
+          ) : (
+            //false
+            <>
+              <Hero />
+              <Login />
+            </>
+          )}
         </>
       )}
     </>

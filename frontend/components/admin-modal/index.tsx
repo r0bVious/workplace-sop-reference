@@ -3,14 +3,13 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
   Button,
 } from "@chakra-ui/react";
 
-const AdminModal = () => {
+const AdminModal = ({ handleAdminModeChange }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -34,11 +33,23 @@ const AdminModal = () => {
             flexDirection="column"
             justifyContent={"space-evenly"}
           >
-            <Button colorScheme="blue" variant="solid" size="lg" height="20%">
-              Add/Remove Employees
-            </Button>
-            <Button colorScheme="blue" variant="solid" size="lg" height="20%">
+            <Button
+              colorScheme="blue"
+              variant="solid"
+              size="lg"
+              height="20%"
+              onClick={() => handleAdminModeChange("articles")}
+            >
               Add/Remove Articles
+            </Button>
+            <Button
+              colorScheme="blue"
+              variant="solid"
+              size="lg"
+              height="20%"
+              onClick={() => handleAdminModeChange("users")}
+            >
+              Add/Remove Users
             </Button>
           </ModalBody>
         </ModalContent>

@@ -1,5 +1,14 @@
 import axios from "axios";
 
+const getUsers = async () => {
+  const res = await axios.get("/user");
+  if (res.status !== 200) {
+    throw new Error("Unable to retrieve users.");
+  }
+  const data = await res.data;
+  return data;
+};
+
 const loginUser = async (username: string, password: string) => {
   const res = await axios.post("/user/login", { username, password });
   if (res.status !== 200) {
@@ -55,4 +64,56 @@ const newComment = async (
   return data;
 };
 
-export { loginUser, checkAuthStatus, logoutUser, getArticles, newComment };
+const newArticle = async (articleHeader: String, articleContent: String) => {
+  const res = await axios.post("/articles/newarticle", {
+    articleHeader,
+    articleContent,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to send comment");
+  }
+  const data = await res.data;
+  return data;
+};
+
+const deleteUser = async (_id: string) => {
+  const res = await axios.post("/user/delete", {
+    _id,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to delete user");
+  }
+  const data = await res.data;
+  return data;
+};
+
+const createUser = async (
+  username: string,
+  position: string,
+  password: string,
+  adminPriv = true
+) => {
+  const res = await axios.post("/user/create", {
+    username,
+    position,
+    password,
+    adminPriv,
+  });
+  if (res.status !== 201) {
+    throw new Error("Unable to create new user");
+  }
+  const data = await res.data;
+  return data;
+};
+
+export {
+  getUsers,
+  loginUser,
+  checkAuthStatus,
+  logoutUser,
+  getArticles,
+  newComment,
+  newArticle,
+  deleteUser,
+  createUser,
+};

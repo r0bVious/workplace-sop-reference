@@ -11,8 +11,6 @@ import {
   logoutUser,
 } from "../helpers/api-communicator.ts";
 
-//may need to add a "signup" to the UserAuth and AuthProvider for admins to add users
-//2:32:00 in MERN ChatBot vid
 type User = {
   username: string;
 };
@@ -34,7 +32,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     async function checkStatus() {
       const data = await checkAuthStatus();
-      console.log("Auth Context check", data);
       if (data) {
         setUser({ username: data.username });
         setIsLoggedIn(true);

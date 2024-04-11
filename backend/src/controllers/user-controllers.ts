@@ -14,7 +14,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { username, position, password, adminPriv } = req.body;
     const checkExistingUser = await User.findOne({ username });
@@ -31,6 +31,21 @@ const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
       message: "OK",
       username: newUser.username,
       position: newUser.position,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "Error", cause: error.message });
+  }
+};
+
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { _id } = req.body;
+    const existingUser = await User.findOne({ _id });
+    if (!existingUser) return res.status(401).send("User doesn't exist.");
+    await existingUser.deleteOne();
+    return res.status(200).json({
+      message: "OK",
     });
   } catch (error) {
     console.log(error);
@@ -131,4 +146,11 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { getAllUsers, signUpUser, loginUser, verifyUser, logoutUser };
+export {
+  getAllUsers,
+  createUser,
+  loginUser,
+  verifyUser,
+  logoutUser,
+  deleteUser,
+};

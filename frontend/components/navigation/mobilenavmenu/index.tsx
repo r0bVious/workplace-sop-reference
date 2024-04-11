@@ -13,9 +13,12 @@ import {
 } from "@chakra-ui/react";
 import AdminModal from "../../admin-modal";
 
-const MobileNavMenu = ({ articles, handleNavButtonClick, employeeMenu }) => {
+const MobileNavMenu = ({
+  articles,
+  handleNavButtonClick,
+  handleAdminModeChange,
+}) => {
   const isAdmin = useAuth()?.isAdmin;
-  console.log("Navmenu admin check:", isAdmin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleLogOutClick = async () => {
     logoutUser();
@@ -60,7 +63,9 @@ const MobileNavMenu = ({ articles, handleNavButtonClick, employeeMenu }) => {
             >
               Logout
             </Button>
-            {isAdmin ? <AdminModal employeeMenu={employeeMenu} /> : null}
+            {isAdmin ? (
+              <AdminModal handleAdminModeChange={handleAdminModeChange} />
+            ) : null}
           </Box>
         </DrawerContent>
       </Drawer>

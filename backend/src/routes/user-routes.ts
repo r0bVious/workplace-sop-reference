@@ -1,13 +1,14 @@
 import { Router } from "express";
 import {
   getAllUsers,
-  signUpUser,
+  createUser,
   loginUser,
   verifyUser,
   logoutUser,
+  deleteUser,
 } from "../controllers/user-controllers.js";
 import {
-  signUpValidator,
+  createUserValidator,
   validate,
   loginValidator,
 } from "../utils/validators.js";
@@ -16,10 +17,10 @@ import { verifyToken } from "../utils/token-manager.js";
 const userRoutes = Router();
 
 userRoutes.get("/", getAllUsers);
-userRoutes.post("/signup", validate(signUpValidator), signUpUser);
+userRoutes.post("/create", validate(createUserValidator), createUser); // admin check middleware?
+userRoutes.post("/delete", deleteUser); // admin check middleware?
 userRoutes.post("/login", validate(loginValidator), loginUser);
 userRoutes.get("/auth-status", verifyToken, verifyUser);
 userRoutes.get("/logout", verifyToken, logoutUser);
-//need an /edit and /delete route, too - or do I want those on Articles/Comments?
 
 export default userRoutes;

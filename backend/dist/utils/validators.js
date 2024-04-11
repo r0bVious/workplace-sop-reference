@@ -18,7 +18,7 @@ const loginValidator = [
     body("username").notEmpty().withMessage("Username Required"),
     body("password").notEmpty().trim().withMessage("Password Required"),
 ];
-const signUpValidator = [
+const createUserValidator = [
     body("position").notEmpty().withMessage("Classroom Assignment Required"),
     ...loginValidator,
 ];
@@ -40,5 +40,5 @@ const articleValidator = [
         .trim()
         .withMessage("Article Content Empty - Unable to Save Article"),
 ];
-export { signUpValidator, commentValidator, articleValidator, loginValidator, validate, };
+export { createUserValidator, commentValidator, articleValidator, loginValidator, validate, };
 //# sourceMappingURL=validators.js.map
