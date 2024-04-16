@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getAllArticlesWithComments,
   newArticle,
+  deleteArticle,
 } from "../controllers/article-controllers.js";
 import { articleValidator, validate } from "../utils/validators.js";
 import { verifyToken } from "../utils/token-manager.js";
@@ -17,5 +18,7 @@ articleRoutes.post(
   validate(articleValidator),
   newArticle
 );
+
+articleRoutes.post("/delete", deleteArticle);
 
 export default articleRoutes;

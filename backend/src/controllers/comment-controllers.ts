@@ -36,4 +36,23 @@ const newComment = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { newComment };
+const deleteComment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { _id } = req.body;
+    const existingComment = await Comment.findOne({ _id });
+    if (!existingComment) return res.status(401).send("Comment doesn't exist.");
+    await existingComment.deleteOne();
+    return res.status(200).json({
+      message: "OK",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "Error", cause: error.message });
+  }
+};
+
+export { newComment, deleteComment };

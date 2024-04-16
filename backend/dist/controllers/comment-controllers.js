@@ -33,5 +33,21 @@ const newComment = async (req, res, next) => {
         return res.status(200).json({ message: "Error", cause: error.message });
     }
 };
-export { newComment };
+const deleteComment = async (req, res, next) => {
+    try {
+        const { _id } = req.body;
+        const existingComment = await Comment.findOne({ _id });
+        if (!existingComment)
+            return res.status(401).send("Comment doesn't exist.");
+        await existingComment.deleteOne();
+        return res.status(200).json({
+            message: "OK",
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(200).json({ message: "Error", cause: error.message });
+    }
+};
+export { newComment, deleteComment };
 //# sourceMappingURL=comment-controllers.js.map

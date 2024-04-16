@@ -14,6 +14,7 @@ import { getArticles } from "../helpers/api-communicator.ts";
 function App() {
   const auth = useAuth();
   const isLoggedIn = auth?.isLoggedIn ?? false;
+  const isAdmin = auth?.isAdmin ?? false;
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [articles, setArticles] = useState([]);
   const [displayArticle, setDisplayArticle] = useState(false);
@@ -23,6 +24,7 @@ function App() {
   });
   const [comments, setComments] = useState([]);
   const [adminMode, setAdminMode] = useState(null);
+  const [articleListChanged, setArticleListChanged] = useState(false);
 
   const handleNavButtonClick = (articleHeader, articleContent) => {
     setSelectedArticle({ articleHeader, articleContent });
@@ -31,6 +33,11 @@ function App() {
 
   const handleAdminModeChange = (mode) => {
     setAdminMode(mode);
+  };
+
+  //re-renders menu for admins after submitting article
+  const handleArticleListChanged = () => {
+    setArticleListChanged(!articleListChanged);
   };
 
   useEffect(() => {
@@ -46,14 +53,18 @@ function App() {
 
     if (isLoggedIn) {
       fetchData();
-    } // Call the fetchData function when the component mounts
-  }, [isLoggedIn]);
+    }
+  }, [isLoggedIn, articleListChanged]);
 
   return (
     <>
       {isLoggedIn && adminMode ? (
         adminMode === "articles" ? (
-          <ArticleEditor handleAdminModeChange={handleAdminModeChange} />
+          <ArticleEditor
+            handleAdminModeChange={handleAdminModeChange}
+            handleArticleListChanged={handleArticleListChanged}
+            articles={articles}
+          />
         ) : (
           <UserEditor handleAdminModeChange={handleAdminModeChange} />
         )

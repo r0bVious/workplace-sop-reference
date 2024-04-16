@@ -34,4 +34,23 @@ const newArticle = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { getAllArticlesWithComments, newArticle };
+const deleteArticle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { _id } = req.body;
+    const existingArticle = await Article.findOne({ _id });
+    if (!existingArticle) return res.status(401).send("Article doesn't exist.");
+    await existingArticle.deleteOne();
+    return res.status(200).json({
+      message: "OK",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "Error", cause: error.message });
+  }
+};
+
+export { getAllArticlesWithComments, newArticle, deleteArticle };

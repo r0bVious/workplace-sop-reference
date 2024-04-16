@@ -5,14 +5,16 @@ import {
   FormLabel,
   Input,
   Text,
+  Stack,
 } from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext";
 import { useState, useEffect } from "react";
-import { newComment } from "../../helpers/api-communicator.ts";
+import { deleteComment, newComment } from "../../helpers/api-communicator.ts";
 import { toast } from "react-hot-toast";
 
 const CommentForm = ({ comments: initialComments, articleHeader }) => {
   const username = useAuth()?.user?.username;
+  const isAdmin = useAuth()?.isAdmin;
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState(initialComments);
 
@@ -26,7 +28,6 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
     const dateCreated = new Date();
     console.log(username, articleHeader, commentContent, dateCreated);
     try {
-      toast.loading("Posting comment...", { id: "comment" });
       const newCommentData = {
         username,
         commentContent,
@@ -42,13 +43,41 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
     }
   };
 
+  const handleClick = async (commentId) => {
+    try {
+      await deleteComment(commentId);
+      toast.success("Comment deleted!", { id: "comment" });
+      const newCommentList = comments.filter(
+        (comment) => comment._id !== commentId
+      );
+      setComments(newCommentList);
+    } catch (error) {
+      console.log(error);
+      toast.error("Comment deletion failed.", { id: "comment" });
+    }
+  };
+
   return (
     <>
       {comments.map((comment, index) => (
-        <Box key={index} bgColor={"lightgray"} m="0.5rem">
-          <Box fontWeight="650">{comment.username}</Box>
-          <Box ml="1rem">{comment.commentContent}</Box>
-        </Box>
+        <Stack
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+        >
+          <Box key={index} bgColor={"lightgray"} m="0.5rem">
+            <Box fontWeight="650">{comment.username}</Box>
+            <Box ml="1rem">{comment.commentContent}</Box>
+          </Box>
+          {isAdmin ? (
+            <Button
+              colorScheme={"red"}
+              onClick={() => handleClick(comment._id)}
+            >
+              Delete
+            </Button>
+          ) : null}
+        </Stack>
       ))}
       <FormControl>
         <Input

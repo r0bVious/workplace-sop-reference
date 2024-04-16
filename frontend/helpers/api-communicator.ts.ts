@@ -106,6 +106,28 @@ const createUser = async (
   return data;
 };
 
+const deleteArticle = async (_id: string) => {
+  const res = await axios.post("/articles/delete", {
+    _id,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to delete article");
+  }
+  const data = await res.data;
+  return data;
+};
+
+const deleteComment = async (_id: string) => {
+  const res = await axios.post("/comments/delete", {
+    _id,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to delete comment");
+  }
+  const data = await res.data;
+  return data;
+};
+
 export {
   getUsers,
   loginUser,
@@ -116,4 +138,6 @@ export {
   newArticle,
   deleteUser,
   createUser,
+  deleteArticle,
+  deleteComment,
 };
