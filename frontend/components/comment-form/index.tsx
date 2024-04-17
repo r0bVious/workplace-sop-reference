@@ -1,15 +1,11 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Button, FormControl, Input, Stack } from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext";
 import { useState, useEffect } from "react";
-import { deleteComment, newComment } from "../../helpers/api-communicator.ts";
+import {
+  deleteComment,
+  getComments,
+  newComment,
+} from "../../helpers/api-communicator.ts";
 import { toast } from "react-hot-toast";
 
 const CommentForm = ({ comments: initialComments, articleHeader }) => {
@@ -22,20 +18,24 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
     setComments(initialComments);
   }, [initialComments]);
 
+  const refreshComments = async (articleHeader: string) => {
+    try {
+      const data = await getComments({ articleHeader });
+      return data.comments;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleInputChange = (e) => setCommentContent(e.target.value);
 
   const handleSubmit = async () => {
     const dateCreated = new Date();
-    console.log(username, articleHeader, commentContent, dateCreated);
     try {
-      const newCommentData = {
-        username,
-        commentContent,
-        dateCreated,
-      };
       await newComment(username, articleHeader, commentContent, dateCreated);
-      setComments([...comments, newCommentData]);
       setCommentContent("");
+      const newCommentList = await refreshComments(articleHeader);
+      setComments(newCommentList);
       toast.success("Comment posted!", { id: "comment" });
     } catch (error) {
       console.log(error);
@@ -47,9 +47,7 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
     try {
       await deleteComment(commentId);
       toast.success("Comment deleted!", { id: "comment" });
-      const newCommentList = comments.filter(
-        (comment) => comment._id !== commentId
-      );
+      const newCommentList = await refreshComments(articleHeader);
       setComments(newCommentList);
     } catch (error) {
       console.log(error);

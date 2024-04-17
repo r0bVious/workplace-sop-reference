@@ -128,6 +128,15 @@ const deleteComment = async (_id: string) => {
   return data;
 };
 
+const getComments = async (params: { articleHeader: string }) => {
+  const res = await axios.get("/comments", { params });
+  if (res.status !== 200) {
+    throw new Error("Unable to retrieve comments");
+  }
+  const data = await res.data;
+  return data;
+};
+
 export {
   getUsers,
   loginUser,
@@ -140,4 +149,5 @@ export {
   createUser,
   deleteArticle,
   deleteComment,
+  getComments,
 };

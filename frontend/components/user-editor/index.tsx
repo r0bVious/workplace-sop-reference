@@ -18,7 +18,7 @@ import {
   getUsers,
   deleteUser,
   createUser,
-} from "../../helpers/api-communicator.ts.ts";
+} from "../../helpers/api-communicator.ts";
 
 interface User {
   _id: string;

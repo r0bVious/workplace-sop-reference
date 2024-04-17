@@ -1,12 +1,13 @@
 import { Router } from "express";
 import {
   deleteComment,
+  getComments,
   newComment,
 } from "../controllers/comment-controllers.js";
 import { commentValidator, validate } from "../utils/validators.js";
 
 const commentsRoutes = Router();
-// commentsRoutes.get("/", getAllComments); BEING HANDLED BY ARTICLES ROUTE WITH ARTICLES GET
+commentsRoutes.get("/", getComments);
 commentsRoutes.post("/newcomment", validate(commentValidator), newComment);
 commentsRoutes.post("/delete", deleteComment);
 
