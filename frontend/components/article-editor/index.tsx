@@ -15,7 +15,12 @@ import { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-hot-toast";
-import { newArticle, deleteArticle } from "../../helpers/api-communicator.ts";
+import {
+  newArticle,
+  deleteArticle,
+  getArticle,
+  editArticle,
+} from "../../helpers/api-communicator.ts";
 
 const ArticleEditor = ({
   handleAdminModeChange,
@@ -24,11 +29,17 @@ const ArticleEditor = ({
 }) => {
   const [articleContent, setArticleContent] = useState<string>("");
   const [articleHeader, setArticleHeader] = useState<string>("");
+  const [articleId, setArticleId] = useState<string>("");
   const [articleList, setArticleList] = useState([]);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setArticleList(articles);
   }, [articles]);
+
+  useEffect(() => {
+    setEditMode(false);
+  }, []);
 
   const handleArticleChange = (articleContent: string) => {
     setArticleContent(articleContent);
@@ -37,18 +48,31 @@ const ArticleEditor = ({
   const handleHeaderChange = (e) => setArticleHeader(e.target.value);
 
   const handleSubmit = async () => {
-    try {
-      toast.loading("Saving new article...", { id: "article" });
-      await newArticle(articleHeader, articleContent);
-      toast.success("New article saved!", { id: "article" });
-      handleAdminModeChange(null);
-      handleArticleListChanged();
-    } catch (error) {
-      toast.error("Error: Data not saved to database.", { id: "article" });
+    if (editMode) {
+      try {
+        toast.loading("Saving edited article...", { id: "article" });
+        await editArticle(articleId, articleHeader, articleContent);
+        toast.success("Edited article saved!", { id: "article" });
+        handleAdminModeChange(null);
+        handleArticleListChanged();
+      } catch (error) {
+        toast.error("Error: Data not saved to database.", { id: "article" });
+      }
+      setEditMode(false);
+    } else {
+      try {
+        toast.loading("Saving new article...", { id: "article" });
+        await newArticle(articleHeader, articleContent);
+        toast.success("New article saved!", { id: "article" });
+        handleAdminModeChange(null);
+        handleArticleListChanged();
+      } catch (error) {
+        toast.error("Error: Data not saved to database.", { id: "article" });
+      }
     }
   };
 
-  const handleClick = async (articleId: string) => {
+  const handleDeleteClick = async (articleId: string) => {
     try {
       toast.loading("Deleting article from database...", { id: "article" });
       await deleteArticle(articleId);
@@ -63,6 +87,23 @@ const ArticleEditor = ({
       toast.error("Error: Article unable to be removed from database.", {
         id: "article",
       });
+    }
+  };
+
+  const handleEditClick = async (articleId: String) => {
+    try {
+      setEditMode(true);
+      const { existingArticle } = await getArticle(articleId);
+      setArticleHeader(existingArticle.articleHeader);
+      setArticleContent(existingArticle.articleContent);
+      setArticleId(existingArticle._id);
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -111,8 +152,14 @@ const ArticleEditor = ({
                   <Text fontWeight="bold">{article.articleHeader}</Text>
                 </Stack>
                 <Button
+                  colorScheme={"blue"}
+                  onClick={() => handleEditClick(article._id)}
+                >
+                  Edit
+                </Button>
+                <Button
                   colorScheme={"red"}
-                  onClick={() => handleClick(article._id)}
+                  onClick={() => handleDeleteClick(article._id)}
                 >
                   Delete
                 </Button>

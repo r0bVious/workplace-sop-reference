@@ -3,6 +3,8 @@ import {
   getAllArticlesWithComments,
   newArticle,
   deleteArticle,
+  getArticle,
+  editArticle,
 } from "../controllers/article-controllers.js";
 import { articleValidator, validate } from "../utils/validators.js";
 import { verifyToken } from "../utils/token-manager.js";
@@ -18,7 +20,8 @@ articleRoutes.post(
   validate(articleValidator),
   newArticle
 );
-
+articleRoutes.get("/article/:id", getArticle);
 articleRoutes.post("/delete", deleteArticle);
+articleRoutes.post("/edit", editArticle);
 
 export default articleRoutes;

@@ -45,6 +45,32 @@ const getArticles = async () => {
   return data;
 };
 
+const getArticle = async (articleId) => {
+  const res = await axios.get(`articles/article/${articleId}`);
+  if (res.status !== 200) {
+    throw new Error("Unable to retrieve article");
+  }
+  const data = await res.data;
+  return data;
+};
+
+const editArticle = async (
+  articleId: String,
+  articleHeader: String,
+  articleContent: String
+) => {
+  const res = await axios.post("/articles/edit", {
+    articleId,
+    articleHeader,
+    articleContent,
+  });
+  if (res.status !== 200) {
+    throw new Error("Unable to edit existing article");
+  }
+  const data = await res.data;
+  return data;
+};
+
 const newComment = async (
   username: String,
   articleHeader: String,
@@ -150,4 +176,6 @@ export {
   deleteArticle,
   deleteComment,
   getComments,
+  getArticle,
+  editArticle,
 };

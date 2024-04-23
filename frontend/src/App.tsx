@@ -14,7 +14,6 @@ import { getArticles } from "../helpers/api-communicator.ts";
 function App() {
   const auth = useAuth();
   const isLoggedIn = auth?.isLoggedIn ?? false;
-  const isAdmin = auth?.isAdmin ?? false;
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [articles, setArticles] = useState([]);
   const [displayArticle, setDisplayArticle] = useState(false);
@@ -33,6 +32,11 @@ function App() {
 
   const handleAdminModeChange = (mode) => {
     setAdminMode(mode);
+  };
+
+  const handleEditArticleData = (articleId, articleHeader, articleContent) => {
+    console.log(articleId, articleHeader, articleContent);
+    setEditArticleData({ articleId, articleHeader, articleContent });
   };
 
   //re-renders menu for admins after submitting article
@@ -64,6 +68,7 @@ function App() {
             handleAdminModeChange={handleAdminModeChange}
             handleArticleListChanged={handleArticleListChanged}
             articles={articles}
+            handleEditArticleData={handleEditArticleData}
           />
         ) : (
           <UserEditor handleAdminModeChange={handleAdminModeChange} />

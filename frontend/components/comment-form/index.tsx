@@ -57,13 +57,14 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
 
   return (
     <>
-      {comments.map((comment, index) => (
+      {comments.map((comment) => (
         <Stack
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
+          key={comment._id}
         >
-          <Box key={index} bgColor={"lightgray"} m="0.5rem">
+          <Box bgColor={"lightgray"} m="0.5rem">
             <Box fontWeight="650">{comment.username}</Box>
             <Box ml="1rem">{comment.commentContent}</Box>
           </Box>

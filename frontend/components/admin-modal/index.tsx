@@ -40,7 +40,7 @@ const AdminModal = ({ handleAdminModeChange }) => {
               height="20%"
               onClick={() => handleAdminModeChange("articles")}
             >
-              Add/Remove Articles
+              Add/Edit/Remove Articles
             </Button>
             <Button
               colorScheme="blue"

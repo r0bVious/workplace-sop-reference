@@ -17,6 +17,18 @@ const getAllArticlesWithComments = async (
   }
 };
 
+const getArticle = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const existingArticle = await Article.findOne({ _id: id });
+    if (!existingArticle) return res.status(401).send("Article doesn't exist.");
+    return res.status(200).json({ message: "OK", existingArticle });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ message: "Error", cause: error.message });
+  }
+};
+
 const newArticle = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { articleHeader, articleContent } = req.body;
@@ -31,6 +43,26 @@ const newArticle = async (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     console.log(error);
     return res.status(200).json({ message: "Error", cause: error.message });
+  }
+};
+
+const editArticle = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { articleId, articleHeader, articleContent } = req.body;
+    const updatedArticle = await Article.findByIdAndUpdate(
+      articleId,
+      { articleHeader, articleContent },
+      { new: true }
+    );
+
+    if (!updatedArticle) {
+      return res.status(404).json({ message: "Article not found" });
+    }
+
+    return res.status(200).json({ message: "Article updated", updatedArticle });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error", cause: error.message });
   }
 };
 
@@ -53,4 +85,10 @@ const deleteArticle = async (
   }
 };
 
-export { getAllArticlesWithComments, newArticle, deleteArticle };
+export {
+  getAllArticlesWithComments,
+  newArticle,
+  deleteArticle,
+  getArticle,
+  editArticle,
+};

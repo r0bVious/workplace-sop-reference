@@ -13,7 +13,10 @@ const Article = ({
   comments,
 }) => {
   //Because your data is coming in formatted by HTML, manually style it here
-  const articleStyles = { h3: { fontWeight: "bold", fontSize: "1.5rem" } };
+  const articleStyles = {
+    h3: { fontWeight: "bold", fontSize: "1.5rem" },
+    marginBottom: "4rem",
+  };
   const articleComments = comments.filter(
     (comment) => comment.articleHeader === articleHeader
   );
