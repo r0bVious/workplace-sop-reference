@@ -1,4 +1,17 @@
-import { Box, Button, FormControl, Input, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  Input,
+  Stack,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+} from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext";
 import { useState, useEffect } from "react";
 import {
@@ -13,6 +26,17 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
   const isAdmin = useAuth()?.isAdmin;
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState(initialComments);
+  const {
+    isOpen: isDeleteAlertOpen,
+    onOpen: openDeleteAlert,
+    onClose: closeDeleteAlert,
+  } = useDisclosure();
+  const {
+    isOpen: isSubmitAlertOpen,
+    onOpen: openSubmitAlert,
+    onClose: closeSubmitAlert,
+  } = useDisclosure();
+  const [commentToDeleteId, setCommentToDeleteId] = useState(null);
 
   useEffect(() => {
     setComments(initialComments);
@@ -30,6 +54,15 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
   const handleInputChange = (e) => setCommentContent(e.target.value);
 
   const handleSubmit = async () => {
+    if (commentContent.trim() === "") {
+      toast.error("Please enter a comment.");
+      return;
+    }
+    openSubmitAlert();
+  };
+
+  const handleConfirmSubmit = async () => {
+    closeSubmitAlert();
     const dateCreated = new Date();
     try {
       await newComment(username, articleHeader, commentContent, dateCreated);
@@ -43,9 +76,19 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
     }
   };
 
+  const handleCancelSubmit = () => {
+    closeSubmitAlert();
+  };
+
   const handleClick = async (commentId) => {
+    setCommentToDeleteId(commentId);
+    openDeleteAlert();
+  };
+
+  const handleConfirmDelete = async () => {
+    closeDeleteAlert();
     try {
-      await deleteComment(commentId);
+      await deleteComment(commentToDeleteId);
       toast.success("Comment deleted!", { id: "comment" });
       const newCommentList = await refreshComments(articleHeader);
       setComments(newCommentList);
@@ -53,6 +96,11 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
       console.log(error);
       toast.error("Comment deletion failed.", { id: "comment" });
     }
+  };
+
+  const handleCancelDelete = () => {
+    closeDeleteAlert();
+    setCommentToDeleteId(null);
   };
 
   return (
@@ -86,6 +134,56 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
         />
         <Button onClick={handleSubmit}>Submit Comment</Button>
       </FormControl>
+
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={null}
+        onClose={closeDeleteAlert}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Comment
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this comment?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={handleCancelDelete}>Cancel</Button>
+              <Button colorScheme="red" onClick={handleConfirmDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <AlertDialog
+        isOpen={isSubmitAlertOpen}
+        leastDestructiveRef={null}
+        onClose={closeSubmitAlert}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Post Comment
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to post this comment?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={handleCancelSubmit}>Cancel</Button>
+              <Button colorScheme="green" onClick={handleConfirmSubmit} ml={3}>
+                Post
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

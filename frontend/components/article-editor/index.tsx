@@ -10,6 +10,13 @@ import {
   Card,
   CardBody,
   Stack,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
@@ -33,6 +40,17 @@ const ArticleEditor = ({
   const [articleList, setArticleList] = useState([]);
   const [editMode, setEditMode] = useState(false);
 
+  const {
+    isOpen: isDeleteAlertOpen,
+    onOpen: openDeleteAlert,
+    onClose: closeDeleteAlert,
+  } = useDisclosure();
+  const {
+    isOpen: isSubmitAlertOpen,
+    onOpen: openSubmitAlert,
+    onClose: closeSubmitAlert,
+  } = useDisclosure();
+
   useEffect(() => {
     setArticleList(articles);
   }, [articles]);
@@ -47,7 +65,32 @@ const ArticleEditor = ({
 
   const handleHeaderChange = (e) => setArticleHeader(e.target.value);
 
-  const handleSubmit = async () => {
+  const handleEditClick = async (articleId: String) => {
+    try {
+      setEditMode(true);
+      const { existingArticle } = await getArticle(articleId);
+      setArticleHeader(existingArticle.articleHeader);
+      setArticleContent(existingArticle.articleContent);
+      setArticleId(existingArticle._id);
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmitClick = async () => {
+    try {
+      openSubmitAlert();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleConfirmSubmit = async () => {
     if (editMode) {
       try {
         toast.loading("Saving edited article...", { id: "article" });
@@ -74,6 +117,16 @@ const ArticleEditor = ({
 
   const handleDeleteClick = async (articleId: string) => {
     try {
+      setArticleId(articleId);
+      openDeleteAlert();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      closeDeleteAlert();
       toast.loading("Deleting article from database...", { id: "article" });
       await deleteArticle(articleId);
       toast.success("Article deleted!", { id: "article" });
@@ -90,21 +143,9 @@ const ArticleEditor = ({
     }
   };
 
-  const handleEditClick = async (articleId: String) => {
-    try {
-      setEditMode(true);
-      const { existingArticle } = await getArticle(articleId);
-      setArticleHeader(existingArticle.articleHeader);
-      setArticleContent(existingArticle.articleContent);
-      setArticleId(existingArticle._id);
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const handleCancel = () => {
+    closeDeleteAlert();
+    closeSubmitAlert();
   };
 
   return (
@@ -138,7 +179,7 @@ const ArticleEditor = ({
           />
         </div>
         <div>
-          <Button onClick={handleSubmit} width="100%" marginTop={5}>
+          <Button onClick={handleSubmitClick} width="100%" marginTop={5}>
             Save Article
           </Button>
         </div>
@@ -168,6 +209,56 @@ const ArticleEditor = ({
           );
         })}
       </Box>
+
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={null}
+        onClose={closeDeleteAlert}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Article
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this article?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={handleCancel}>Cancel</Button>
+              <Button colorScheme="red" onClick={handleConfirmDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <AlertDialog
+        isOpen={isSubmitAlertOpen}
+        leastDestructiveRef={null}
+        onClose={closeSubmitAlert}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Save/Edit Article
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to save/edit this article?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={handleCancel}>Cancel</Button>
+              <Button colorScheme="green" onClick={handleConfirmSubmit} ml={3}>
+                Save
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

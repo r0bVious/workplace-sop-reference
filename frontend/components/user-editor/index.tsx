@@ -11,6 +11,13 @@ import {
   CardBody,
   Stack,
   Switch,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
@@ -32,6 +39,12 @@ const UserEditor = ({ handleAdminModeChange }) => {
   const [inputPosition, setInputPosition] = useState("");
   const [inputAdminPriv, setInputAdminPriv] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const {
+    isOpen: isDeleteAlertOpen,
+    onOpen: openDeleteAlert,
+    onClose: closeDeleteAlert,
+  } = useDisclosure();
+  const [userToDeleteId, setUserToDeleteId] = useState("");
 
   const handleInputName = (e) => {
     setInputName(e.target.value);
@@ -60,6 +73,16 @@ const UserEditor = ({ handleAdminModeChange }) => {
     fetchUsers();
   }, []);
 
+  const handleDeleteClick = async (inUserId) => {
+    setUserToDeleteId(inUserId);
+    openDeleteAlert();
+  };
+
+  const handleCancelDelete = () => {
+    closeDeleteAlert();
+    setUserToDeleteId("");
+  };
+
   const handleSubmit = async () => {
     try {
       toast.loading("Saving new user(s)...", { id: "user" });
@@ -72,10 +95,11 @@ const UserEditor = ({ handleAdminModeChange }) => {
     }
   };
 
-  const handleClick = async (userId: string) => {
+  const handleConfirmDelete = async () => {
     try {
+      closeDeleteAlert();
       toast.loading("Deleting user from database...", { id: "user" });
-      await deleteUser(userId);
+      await deleteUser(userToDeleteId);
       toast.success("User deleted!", { id: "user" });
       console.log("click");
       fetchUsers();
@@ -142,7 +166,7 @@ const UserEditor = ({ handleAdminModeChange }) => {
                 </Stack>
                 <Button
                   colorScheme={"red"}
-                  onClick={() => handleClick(user._id)}
+                  onClick={() => handleDeleteClick(user._id)}
                 >
                   Delete
                 </Button>
@@ -150,6 +174,30 @@ const UserEditor = ({ handleAdminModeChange }) => {
             </Card>
           );
         })}
+        <AlertDialog
+          isOpen={isDeleteAlertOpen}
+          leastDestructiveRef={null}
+          onClose={closeDeleteAlert}
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                Delete User
+              </AlertDialogHeader>
+
+              <AlertDialogBody>
+                Are you sure you want to delete this user?
+              </AlertDialogBody>
+
+              <AlertDialogFooter>
+                <Button onClick={handleCancelDelete}>Cancel</Button>
+                <Button colorScheme="red" onClick={handleConfirmDelete} ml={3}>
+                  Delete
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
       </Box>
     </>
   );
