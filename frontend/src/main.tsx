@@ -4,7 +4,6 @@ import App from "./App.tsx";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext.tsx";
-import { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:5000/reference-guide";
@@ -15,7 +14,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ChakraProvider>
       <React.StrictMode>
         <BrowserRouter>
-          <Toaster position="top-right" />
           <App />
         </BrowserRouter>
       </React.StrictMode>

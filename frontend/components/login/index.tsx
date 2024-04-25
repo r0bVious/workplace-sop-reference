@@ -6,22 +6,28 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import { toast } from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
+import useCustomToast from "../custom-hooks/customToast";
 
 const Login = () => {
   const auth = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const toast = useCustomToast();
 
   const handleSubmit = async () => {
     try {
-      toast.loading("Logging In...", { id: "login" });
       await auth?.login(username, password);
-      toast.success("Login Successful.", { id: "login" });
+      toast({
+        title: "Login Successful!",
+        status: "success",
+      });
     } catch (error) {
       console.log("Error:", error);
-      toast.error("Login Failed.", { id: "login" });
+      toast({
+        title: "Login Failed!",
+        status: "error",
+      });
     }
   };
 

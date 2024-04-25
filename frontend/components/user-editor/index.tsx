@@ -18,14 +18,15 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
+  useToast,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { toast } from "react-hot-toast";
 import {
   getUsers,
   deleteUser,
   createUser,
 } from "../../helpers/api-communicator.ts";
+import useCustomToast from "../custom-hooks/customToast.ts";
 
 interface User {
   _id: string;
@@ -45,6 +46,7 @@ const UserEditor = ({ handleAdminModeChange }) => {
     onClose: closeDeleteAlert,
   } = useDisclosure();
   const [userToDeleteId, setUserToDeleteId] = useState("");
+  const toast = useCustomToast();
 
   const handleInputName = (e) => {
     setInputName(e.target.value);
@@ -85,28 +87,48 @@ const UserEditor = ({ handleAdminModeChange }) => {
 
   const handleSubmit = async () => {
     try {
-      toast.loading("Saving new user(s)...", { id: "user" });
       await createUser(inputName, inputPosition, inputPassword, inputAdminPriv);
-      toast.success("New user saved!", { id: "user" });
+      toast({
+        title: "New user created!",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
       fetchUsers();
+      setInputName("");
+      setInputPassword("");
+      setInputPosition("");
+      setInputAdminPriv(false);
     } catch (error) {
       console.log(error);
-      toast.error("Error: Data not saved to database.", { id: "user" });
+      toast({
+        title: "Cannot create new user.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 
   const handleConfirmDelete = async () => {
     try {
       closeDeleteAlert();
-      toast.loading("Deleting user from database...", { id: "user" });
       await deleteUser(userToDeleteId);
-      toast.success("User deleted!", { id: "user" });
+      toast({
+        title: "User deleted!",
+        status: "info",
+        duration: 2000,
+        isClosable: true,
+      });
       console.log("click");
       fetchUsers();
     } catch (error) {
       console.log(error);
-      toast.error("Error: User unable to be removed from database.", {
-        id: "user",
+      toast({
+        title: "Cannot delete user.",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
       });
     }
   };

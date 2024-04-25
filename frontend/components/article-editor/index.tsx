@@ -21,13 +21,13 @@ import {
 import { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { toast } from "react-hot-toast";
 import {
   newArticle,
   deleteArticle,
   getArticle,
   editArticle,
 } from "../../helpers/api-communicator.ts";
+import useCustomToast from "../custom-hooks/customToast.ts";
 
 const ArticleEditor = ({
   handleAdminModeChange,
@@ -39,6 +39,7 @@ const ArticleEditor = ({
   const [articleId, setArticleId] = useState<string>("");
   const [articleList, setArticleList] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const toast = useCustomToast();
 
   const {
     isOpen: isDeleteAlertOpen,
@@ -93,24 +94,22 @@ const ArticleEditor = ({
   const handleConfirmSubmit = async () => {
     if (editMode) {
       try {
-        toast.loading("Saving edited article...", { id: "article" });
         await editArticle(articleId, articleHeader, articleContent);
-        toast.success("Edited article saved!", { id: "article" });
+        toast({ title: "Article changes saved!", status: "success" });
         handleAdminModeChange(null);
         handleArticleListChanged();
       } catch (error) {
-        toast.error("Error: Data not saved to database.", { id: "article" });
+        toast({ title: "Cannot save changes to article!", status: "error" });
       }
       setEditMode(false);
     } else {
       try {
-        toast.loading("Saving new article...", { id: "article" });
         await newArticle(articleHeader, articleContent);
-        toast.success("New article saved!", { id: "article" });
+        toast({ title: "New article saved!", status: "success" });
         handleAdminModeChange(null);
         handleArticleListChanged();
       } catch (error) {
-        toast.error("Error: Data not saved to database.", { id: "article" });
+        toast({ title: "Cannot save new article!", status: "error" });
       }
     }
   };
@@ -127,9 +126,11 @@ const ArticleEditor = ({
   const handleConfirmDelete = async () => {
     try {
       closeDeleteAlert();
-      toast.loading("Deleting article from database...", { id: "article" });
       await deleteArticle(articleId);
-      toast.success("Article deleted!", { id: "article" });
+      toast({
+        title: "Article deleted.",
+        status: "info",
+      });
       const newArticleList = articleList.filter(
         (article) => article._id !== articleId
       );
@@ -137,8 +138,9 @@ const ArticleEditor = ({
       handleArticleListChanged();
     } catch (error) {
       console.log(error);
-      toast.error("Error: Article unable to be removed from database.", {
-        id: "article",
+      toast({
+        title: "Unable to delete article.",
+        status: "error",
       });
     }
   };

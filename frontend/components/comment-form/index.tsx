@@ -19,7 +19,7 @@ import {
   getComments,
   newComment,
 } from "../../helpers/api-communicator.ts";
-import { toast } from "react-hot-toast";
+import useCustomToast from "../custom-hooks/customToast.ts";
 
 const CommentForm = ({ comments: initialComments, articleHeader }) => {
   const username = useAuth()?.user?.username;
@@ -37,6 +37,7 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
     onClose: closeSubmitAlert,
   } = useDisclosure();
   const [commentToDeleteId, setCommentToDeleteId] = useState(null);
+  const toast = useCustomToast();
 
   useEffect(() => {
     setComments(initialComments);
@@ -55,7 +56,10 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
 
   const handleSubmit = async () => {
     if (commentContent.trim() === "") {
-      toast.error("Please enter a comment.");
+      toast({
+        title: "Please enter a comment.",
+        status: "error",
+      });
       return;
     }
     openSubmitAlert();
@@ -69,10 +73,10 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
       setCommentContent("");
       const newCommentList = await refreshComments(articleHeader);
       setComments(newCommentList);
-      toast.success("Comment posted!", { id: "comment" });
+      toast({ title: "Comment posted!", status: "success" });
     } catch (error) {
       console.log(error);
-      toast.error("Comment posting failed.", { id: "comment" });
+      toast({ title: "Comment posting failed!", status: "error" });
     }
   };
 
@@ -89,12 +93,12 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
     closeDeleteAlert();
     try {
       await deleteComment(commentToDeleteId);
-      toast.success("Comment deleted!", { id: "comment" });
+      toast({ title: "Comment removed.", status: "info" });
       const newCommentList = await refreshComments(articleHeader);
       setComments(newCommentList);
     } catch (error) {
       console.log(error);
-      toast.error("Comment deletion failed.", { id: "comment" });
+      toast({ title: "Comment removal failed!", status: "error" });
     }
   };
 
