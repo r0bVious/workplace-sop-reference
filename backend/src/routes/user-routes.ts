@@ -16,7 +16,7 @@ import { verifyToken, verifyAdmin } from "../utils/token-manager.js";
 
 const userRoutes = Router();
 
-userRoutes.get("/", getAllUsers);
+userRoutes.get("/", verifyAdmin, getAllUsers);
 userRoutes.post(
   "/create",
   validate(createUserValidator),

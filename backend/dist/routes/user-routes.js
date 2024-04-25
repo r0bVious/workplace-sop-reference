@@ -3,7 +3,7 @@ import { getAllUsers, createUser, loginUser, verifyUser, logoutUser, deleteUser,
 import { createUserValidator, validate, loginValidator, } from "../utils/validators.js";
 import { verifyToken, verifyAdmin } from "../utils/token-manager.js";
 const userRoutes = Router();
-userRoutes.get("/", getAllUsers);
+userRoutes.get("/", verifyAdmin, getAllUsers);
 userRoutes.post("/create", validate(createUserValidator), verifyAdmin, createUser); // admin check middleware?
 userRoutes.post("/delete", verifyAdmin, deleteUser); // admin check middleware?
 userRoutes.post("/login", validate(loginValidator), loginUser);
