@@ -32,26 +32,32 @@ const Login = () => {
   };
 
   return (
-    <VStack padding={10}>
+    <VStack padding={10} spacing={6}>
       <FormControl>
-        <FormLabel>Username</FormLabel>
         <Input
+          id="username"
           value={username}
           type="text"
-          placeholder="enter username..."
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-        />
-        <FormLabel>Password</FormLabel>
-        <Input
-          value={password}
-          type="password"
-          placeholder="enter password..."
-          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter username..."
+          onChange={(e) => setUsername(e.target.value)}
+          size="lg"
+          variant="flushed"
         />
       </FormControl>
-      <Button onClick={handleSubmit}>Log-In</Button>
+      <FormControl>
+        <Input
+          id="password"
+          value={password}
+          type="password"
+          placeholder="Enter password..."
+          onChange={(e) => setPassword(e.target.value)}
+          size="lg"
+          variant="flushed"
+        />
+      </FormControl>
+      <Button colorScheme="blue" onClick={handleSubmit} size="lg">
+        Log In
+      </Button>
     </VStack>
   );
 };

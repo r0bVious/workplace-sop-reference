@@ -22,8 +22,8 @@ userRoutes.post(
   validate(createUserValidator),
   verifyAdmin,
   createUser
-); // admin check middleware?
-userRoutes.post("/delete", verifyAdmin, deleteUser); // admin check middleware?
+);
+userRoutes.post("/delete", verifyAdmin, deleteUser);
 userRoutes.post("/login", validate(loginValidator), loginUser);
 userRoutes.get("/auth-status", verifyToken, verifyUser);
 userRoutes.get("/logout", verifyToken, logoutUser);

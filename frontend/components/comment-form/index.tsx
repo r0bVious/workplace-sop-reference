@@ -4,6 +4,7 @@ import {
   FormControl,
   Input,
   Stack,
+  Text,
   useDisclosure,
   AlertDialog,
   AlertDialogOverlay,
@@ -107,36 +108,71 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
     setCommentToDeleteId(null);
   };
 
+  const formatDate = (dateString: String): string => {
+    const date = new Date(dateString.toString());
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${year}/${month}/${day} @ ${hours}:${minutes}`;
+  };
+
   return (
-    <>
+    <Stack
+      spacing={4}
+      mb={"5rem"}
+      sx={{ p: { textIndent: "0", marginInlineStart: "0" } }}
+    >
       {comments.map((comment) => (
-        <Stack
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
+        <Box
           key={comment._id}
+          bg="gray.200"
+          borderRadius="md"
+          boxShadow="md"
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          p={5}
         >
-          <Box bgColor={"lightgray"} m="0.5rem">
-            <Box fontWeight="650">{comment.username}</Box>
-            <Box ml="1rem">{comment.commentContent}</Box>
+          <Box display={"flex"} justifyContent={"space-between"} width="100%">
+            <Text fontWeight="bold">{comment.username}</Text>
+            <Text as="i">{formatDate(comment.dateCreated)}</Text>
           </Box>
-          {isAdmin ? (
-            <Button
-              colorScheme={"red"}
-              onClick={() => handleClick(comment._id)}
-            >
-              Delete
-            </Button>
-          ) : null}
-        </Stack>
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            width="100%"
+          >
+            <Text maxWidth="75%">{comment.commentContent}</Text>
+            {isAdmin && (
+              <Button
+                colorScheme="red"
+                size="sm"
+                onClick={() => handleClick(comment._id)}
+              >
+                Delete
+              </Button>
+            )}
+          </Box>
+        </Box>
       ))}
-      <FormControl>
+      <FormControl display={"flex"} flexDirection={"column"} gap={2}>
         <Input
           type="text"
           value={commentContent}
           onChange={handleInputChange}
+          placeholder="Write a comment..."
         />
-        <Button onClick={handleSubmit}>Submit Comment</Button>
+        <Button
+          colorScheme="blue"
+          onClick={handleSubmit}
+          alignSelf={"flex-end"}
+        >
+          Post Comment
+        </Button>
       </FormControl>
 
       <AlertDialog
@@ -188,7 +224,7 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </>
+    </Stack>
   );
 };
 

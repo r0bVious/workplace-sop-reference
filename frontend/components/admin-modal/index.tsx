@@ -17,7 +17,7 @@ const AdminModal = ({ handleAdminModeChange }) => {
       <Button
         onClick={onOpen}
         colorScheme="blue"
-        height="5vh"
+        height="7vh"
         ml={5}
         fontSize="1.5rem"
       >

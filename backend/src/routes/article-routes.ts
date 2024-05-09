@@ -13,7 +13,6 @@ const articleRoutes = Router();
 
 articleRoutes.get("/", getAllArticlesWithComments);
 
-//maybe make an admin validator here?
 articleRoutes.post(
   "/newarticle",
   verifyToken,

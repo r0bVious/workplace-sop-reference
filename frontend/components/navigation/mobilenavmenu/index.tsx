@@ -36,11 +36,14 @@ const MobileNavMenu = ({
       <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader alignSelf="center">Articles</DrawerHeader>
+          <Box bg="#3182ce" height={"3px"}>
+            {/* Add a couple of pixels of black background here */}
+          </Box>
           <DrawerBody
             display="grid"
             gridTemplateColumns="repeat(3, 1fr)"
             gap="1rem"
+            my={5}
           >
             {articles.map((article, index) => (
               <NavButton
@@ -58,7 +61,7 @@ const MobileNavMenu = ({
               marginBottom="1rem"
               onClick={handleLogOutClick}
               width="90%"
-              height="5vh"
+              height="7vh"
               fontSize="1.5rem"
             >
               Logout
@@ -75,10 +78,11 @@ const MobileNavMenu = ({
         position="fixed"
         bottom="0"
         width="100%"
-        height="8vh"
-        fontSize="1.5rem"
+        height="10vh"
+        fontSize="3.5rem"
+        borderRadius="0"
       >
-        &#9776;
+        <Box mb={4}>︽</Box>
       </Button>
     </>
   );
