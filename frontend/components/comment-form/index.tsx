@@ -22,7 +22,11 @@ import {
 } from "../../helpers/api-communicator.ts";
 import useCustomToast from "../custom-hooks/customToast.ts";
 
-const CommentForm = ({ comments: initialComments, articleHeader }) => {
+const CommentForm = ({
+  comments: initialComments,
+  articleHeader,
+  isMobile,
+}) => {
   const username = useAuth()?.user?.username;
   const isAdmin = useAuth()?.isAdmin;
   const [commentContent, setCommentContent] = useState("");
@@ -121,7 +125,7 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
   return (
     <Stack
       spacing={4}
-      mb={"5rem"}
+      mb={isMobile ? "5rem" : 0}
       sx={{ p: { textIndent: "0", marginInlineStart: "0" } }}
     >
       {comments.map((comment) => (
@@ -181,7 +185,7 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
         onClose={closeDeleteAlert}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent maxW="sm">
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete Comment
             </AlertDialogHeader>
@@ -206,7 +210,7 @@ const CommentForm = ({ comments: initialComments, articleHeader }) => {
         onClose={closeSubmitAlert}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent maxW="sm">
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Post Comment
             </AlertDialogHeader>

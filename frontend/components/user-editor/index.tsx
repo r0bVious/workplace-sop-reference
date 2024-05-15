@@ -33,7 +33,7 @@ interface User {
   username: string;
 }
 
-const UserEditor = ({ handleAdminModeChange }) => {
+const UserEditor = ({ handleAdminModeChange, isMobile }) => {
   const [inputName, setInputName] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [inputPosition, setInputPosition] = useState("");
@@ -62,7 +62,7 @@ const UserEditor = ({ handleAdminModeChange }) => {
 
   const fetchUsers = async () => {
     try {
-      const response = await getUsers(); //here is where you'd swap functions for a more secure GET from the back
+      const response = await getUsers();
       const users = response.users;
       setUsers(users);
     } catch (error) {
@@ -133,7 +133,7 @@ const UserEditor = ({ handleAdminModeChange }) => {
   };
 
   return (
-    <>
+    <div>
       <FormControl p={5} display="flex" flexDirection="column">
         <CloseButton
           size="lg"
@@ -176,7 +176,7 @@ const UserEditor = ({ handleAdminModeChange }) => {
           Save New User
         </Button>
       </FormControl>
-      <Box>
+      <Box display={isMobile ? "block" : "flex"}>
         {users.map((user) => {
           return (
             <Card key={user._id}>
@@ -201,7 +201,7 @@ const UserEditor = ({ handleAdminModeChange }) => {
           onClose={closeDeleteAlert}
         >
           <AlertDialogOverlay>
-            <AlertDialogContent>
+            <AlertDialogContent maxW="sm">
               <AlertDialogHeader fontSize="lg" fontWeight="bold">
                 Delete User
               </AlertDialogHeader>
@@ -220,7 +220,7 @@ const UserEditor = ({ handleAdminModeChange }) => {
           </AlertDialogOverlay>
         </AlertDialog>
       </Box>
-    </>
+    </div>
   );
 };
 

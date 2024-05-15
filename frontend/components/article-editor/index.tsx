@@ -27,11 +27,13 @@ import {
   editArticle,
 } from "../../helpers/api-communicator.ts";
 import useCustomToast from "../custom-hooks/customToast.ts";
+import "./index.css";
 
 const ArticleEditor = ({
   handleAdminModeChange,
   handleArticleListChanged,
   articles,
+  isMobile,
 }) => {
   const [articleContent, setArticleContent] = useState<string>("");
   const [articleHeader, setArticleHeader] = useState<string>("");
@@ -169,7 +171,7 @@ const ArticleEditor = ({
           fontSize="xl"
           textAlign={"center"}
         >
-          Create New Article
+          Create/Edit Article
         </Text>
         <Stack bgColor="gray.200" borderRadius={"md"} boxShadow={"md"} p={5}>
           <div>
@@ -197,12 +199,15 @@ const ArticleEditor = ({
                   ["clean"],
                 ],
               }}
-              style={{ background: "white", height: "auto" }}
+              style={{
+                background: "white",
+                height: "auto",
+              }}
               placeholder="Type something..."
             />
           </div>
           <Button onClick={handleSubmitClick} width="100%" colorScheme={"blue"}>
-            Save New Article
+            Save/Update Article
           </Button>
         </Stack>
       </FormControl>
@@ -258,7 +263,7 @@ const ArticleEditor = ({
         onClose={closeDeleteAlert}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent maxW="sm">
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete Article
             </AlertDialogHeader>
@@ -283,7 +288,7 @@ const ArticleEditor = ({
         onClose={closeSubmitAlert}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent maxW="sm">
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Save/Edit Article
             </AlertDialogHeader>

@@ -6,7 +6,6 @@ import {
   Button,
   Drawer,
   DrawerBody,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   Box,
@@ -36,9 +35,7 @@ const MobileNavMenu = ({
       <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <Box bg="#3182ce" height={"3px"}>
-            {/* Add a couple of pixels of black background here */}
-          </Box>
+          <Box bg="#3182ce" height={"3px"}></Box>
           <DrawerBody
             display="grid"
             gridTemplateColumns="repeat(3, 1fr)"

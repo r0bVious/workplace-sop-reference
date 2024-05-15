@@ -1,14 +1,15 @@
 import { useBreakpointValue } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+
 import Hero from "../components/hero";
 import Article from "../components/article";
 import Login from "../components/login";
 import MobileNavMenu from "../components/navigation/mobilenavmenu";
-import Header from "../components/navigation/desktopheader";
-import { useAuth } from "../context/AuthContext";
-import Landing from "../components/landing";
-import { useState, useEffect } from "react";
 import ArticleEditor from "../components/article-editor";
 import UserEditor from "../components/user-editor";
+import Landing from "../components/landing";
+
+import { useAuth } from "../context/AuthContext";
 import { getArticles } from "../helpers/api-communicator.ts";
 
 function App() {
@@ -34,12 +35,6 @@ function App() {
     setAdminMode(mode);
   };
 
-  const handleEditArticleData = (articleId, articleHeader, articleContent) => {
-    console.log(articleId, articleHeader, articleContent);
-    setEditArticleData({ articleId, articleHeader, articleContent });
-  };
-
-  //re-renders menu for admins after submitting article
   const handleArticleListChanged = () => {
     setArticleListChanged(!articleListChanged);
   };
@@ -68,10 +63,13 @@ function App() {
             handleAdminModeChange={handleAdminModeChange}
             handleArticleListChanged={handleArticleListChanged}
             articles={articles}
-            handleEditArticleData={handleEditArticleData}
+            isMobile={isMobile}
           />
         ) : (
-          <UserEditor handleAdminModeChange={handleAdminModeChange} />
+          <UserEditor
+            handleAdminModeChange={handleAdminModeChange}
+            isMobile={isMobile}
+          />
         )
       ) : (
         <>
@@ -83,21 +81,18 @@ function App() {
                   articleHeader={selectedArticle.articleHeader}
                   articleContent={selectedArticle.articleContent}
                   comments={comments}
+                  isMobile={isMobile}
                 />
               ) : (
                 <>
                   <Landing />
                 </>
               )}
-              {isMobile ? (
-                <MobileNavMenu
-                  articles={articles}
-                  handleNavButtonClick={handleNavButtonClick}
-                  handleAdminModeChange={setAdminMode}
-                />
-              ) : (
-                <Header />
-              )}
+              <MobileNavMenu
+                articles={articles}
+                handleNavButtonClick={handleNavButtonClick}
+                handleAdminModeChange={setAdminMode}
+              />
             </>
           ) : (
             //false
