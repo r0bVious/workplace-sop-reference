@@ -20,6 +20,7 @@ const AdminModal = ({ handleAdminModeChange }) => {
         height="7vh"
         ml={5}
         fontSize="1.5rem"
+        width="10rem"
       >
         Admin
       </Button>

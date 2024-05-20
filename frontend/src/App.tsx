@@ -8,7 +8,6 @@ import MobileNavMenu from "../components/navigation/mobilenavmenu";
 import ArticleEditor from "../components/article-editor";
 import UserEditor from "../components/user-editor";
 import Landing from "../components/landing";
-
 import { useAuth } from "../context/AuthContext";
 import { getArticles } from "../helpers/api-communicator.ts";
 
@@ -92,6 +91,7 @@ function App() {
                 articles={articles}
                 handleNavButtonClick={handleNavButtonClick}
                 handleAdminModeChange={setAdminMode}
+                isMobile={isMobile}
               />
             </>
           ) : (

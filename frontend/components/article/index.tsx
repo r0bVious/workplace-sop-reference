@@ -9,8 +9,7 @@ const Article = ({
 }) => {
   const desktopModeStyles = {
     background: "#333A3F",
-    paddingTop: "1rem",
-    height: "110dvh",
+    padding: "1rem 0 5rem",
   };
 
   const mobileStyles = {
@@ -23,11 +22,8 @@ const Article = ({
 
   const desktopStyles = {
     ...mobileStyles,
-    fontSize: "1.25rem",
-    h3: { fontWeight: "bold", fontSize: "2rem" },
-    h2: { fontWeight: "bold", fontSize: "2rem" },
     maxWidth: "75%",
-    margin: "0 auto 5rem",
+    margin: "0 auto",
     boxShadow: "5px 5px 10px black",
   };
 

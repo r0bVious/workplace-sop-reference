@@ -134,24 +134,46 @@ const UserEditor = ({ handleAdminModeChange, isMobile }) => {
 
   return (
     <div>
-      <FormControl p={5} display="flex" flexDirection="column">
-        <CloseButton
-          size="lg"
-          alignSelf="flex-end"
-          onClick={() => handleAdminModeChange(null)}
-        />
-        <Text>User Editor</Text>
-        <FormHelperText marginBottom={5}>
-          This is where you can add or remove users.
-        </FormHelperText>
-        <Text>Create New User</Text>
+      <Button
+        colorScheme="red"
+        size="lg"
+        alignSelf="flex-start"
+        onClick={() => handleAdminModeChange(null)}
+        marginTop={2}
+        ml={5}
+      >
+        Go Back
+      </Button>
+      <Text
+        fontWeight="bold"
+        textDecoration="underline"
+        fontSize="xl"
+        textAlign={"center"}
+      >
+        Create New User
+      </Text>
+      <FormControl
+        p={5}
+        display="flex"
+        flexDirection="column"
+        bgColor="gray.200"
+        maxWidth={isMobile ? "95%" : "50%"}
+        borderRadius={10}
+        mx={"auto"}
+      >
         <FormLabel>New User's Username:</FormLabel>
-        <Input type="text" value={inputName} onChange={handleInputName} />
+        <Input
+          type="text"
+          value={inputName}
+          onChange={handleInputName}
+          bgColor={"white"}
+        />
         <FormLabel>New User's Password:</FormLabel>
         <Input
           type="password"
           value={inputPassword}
           onChange={handleInputPassword}
+          bgColor={"white"}
         />
         <Stack display="flex" flexDirection="row">
           <Box>
@@ -160,6 +182,7 @@ const UserEditor = ({ handleAdminModeChange, isMobile }) => {
               type="text"
               value={inputPosition}
               onChange={handleInputPosition}
+              bgColor={"white"}
             />
           </Box>
           <Box display="flex" flexDirection="column">
@@ -172,14 +195,47 @@ const UserEditor = ({ handleAdminModeChange, isMobile }) => {
             />
           </Box>
         </Stack>
-        <Button onClick={handleSubmit} width="100%">
+        <Button
+          onClick={handleSubmit}
+          width="100%"
+          colorScheme={"blue"}
+          maxWidth="25rem"
+          alignSelf={"center"}
+          mt={5}
+        >
           Save New User
         </Button>
       </FormControl>
-      <Box display={isMobile ? "block" : "flex"}>
+
+      <Text
+        margin={"2rem 0 0.5rem"}
+        fontWeight="bold"
+        textDecoration="underline"
+        fontSize="xl"
+        textAlign="center"
+      >
+        Delete Existing Users
+      </Text>
+      <Box
+        display="grid"
+        gridTemplateColumns={{
+          base: "1fr",
+          md: "repeat(auto-fit, minmax(300px, 1fr))",
+        }}
+        gridGap={5}
+        justifyContent="center"
+        mx={5}
+        paddingBottom={5}
+      >
         {users.map((user) => {
           return (
-            <Card key={user._id}>
+            <Card
+              key={user._id}
+              bgColor={"gray.200"}
+              borderRadius={"md"}
+              boxShadow={"md"}
+              width="100%"
+            >
               <CardBody display="flex" justifyContent="space-between">
                 <Stack>
                   <Text fontWeight="bold">{user.username}</Text>
@@ -188,6 +244,7 @@ const UserEditor = ({ handleAdminModeChange, isMobile }) => {
                 <Button
                   colorScheme={"red"}
                   onClick={() => handleDeleteClick(user._id)}
+                  alignSelf="center"
                 >
                   Delete
                 </Button>

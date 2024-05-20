@@ -16,6 +16,7 @@ const MobileNavMenu = ({
   articles,
   handleNavButtonClick,
   handleAdminModeChange,
+  isMobile,
 }) => {
   const isAdmin = useAuth()?.isAdmin;
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,7 +39,11 @@ const MobileNavMenu = ({
           <Box bg="#3182ce" height={"3px"}></Box>
           <DrawerBody
             display="grid"
-            gridTemplateColumns="repeat(3, 1fr)"
+            gridTemplateColumns={
+              isMobile
+                ? "repeat(3, 1fr)"
+                : "repeat(auto-fit, minmax(200px, 1fr))"
+            }
             gap="1rem"
             my={5}
           >
@@ -57,7 +62,7 @@ const MobileNavMenu = ({
               colorScheme="red"
               marginBottom="1rem"
               onClick={handleLogOutClick}
-              width="90%"
+              width={isMobile ? "90%" : "10rem"}
               height="7vh"
               fontSize="1.5rem"
             >
@@ -74,10 +79,14 @@ const MobileNavMenu = ({
         onClick={onOpen}
         position="fixed"
         bottom="0"
-        width="100%"
+        left="0"
+        right="0"
+        margin="auto"
+        width={isMobile ? "100%" : "25%"}
         height="10vh"
         fontSize="3.5rem"
-        borderRadius="0"
+        borderRadius={isMobile ? "0" : "5px 5px 0px 0px"}
+        boxShadow={isMobile ? "0" : "5px 5px 10px #333333"}
       >
         <Box mb={4}>︽</Box>
       </Button>

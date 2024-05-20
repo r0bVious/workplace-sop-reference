@@ -3,7 +3,6 @@ import {
   FormLabel,
   Input,
   Button,
-  CloseButton,
   Text,
   Box,
   Card,
@@ -159,12 +158,16 @@ const ArticleEditor = ({
 
   return (
     <>
-      <FormControl p={5} display="flex" flexDirection="column" gap={2}>
-        <CloseButton
+      <FormControl px={5} display="flex" flexDirection="column" gap={2}>
+        <Button
+          colorScheme="red"
           size="lg"
-          alignSelf="flex-end"
+          alignSelf="flex-start"
           onClick={() => handleAdminModeChange(null)}
-        />
+          marginTop={2}
+        >
+          Go Back
+        </Button>
         <Text
           fontWeight="bold"
           textDecoration="underline"
@@ -206,28 +209,45 @@ const ArticleEditor = ({
               placeholder="Type something..."
             />
           </div>
-          <Button onClick={handleSubmitClick} width="100%" colorScheme={"blue"}>
+          <Button
+            onClick={handleSubmitClick}
+            width="100%"
+            colorScheme={"blue"}
+            maxWidth="25rem"
+            alignSelf={"center"}
+          >
             Save/Update Article
           </Button>
         </Stack>
       </FormControl>
-      <Stack spacing={2} my={"2rem"}>
-        <Text
-          fontWeight="bold"
-          textDecoration="underline"
-          fontSize="xl"
-          textAlign="center"
-        >
-          Edit/Delete Existing Articles
-        </Text>
-        {articleList.map((article) => {
+      <Text
+        margin={"2rem 0 0.5rem"}
+        fontWeight="bold"
+        textDecoration="underline"
+        fontSize="xl"
+        textAlign="center"
+      >
+        Edit/Delete Existing Articles
+      </Text>
+      <Box
+        display="grid"
+        gridTemplateColumns={{
+          base: "1fr",
+          md: "repeat(auto-fit, minmax(300px, 1fr))",
+        }}
+        gridGap={5}
+        justifyContent="center"
+        mx={5}
+        paddingBottom={5}
+      >
+        {articleList.map((article, index) => {
           return (
             <Card
               key={article._id}
               bgColor={"gray.200"}
               borderRadius={"md"}
               boxShadow={"md"}
-              mx={5}
+              width="100%"
             >
               <CardBody display={"flex"} flexDirection={"column"} gap={5}>
                 <Stack>
@@ -255,7 +275,7 @@ const ArticleEditor = ({
             </Card>
           );
         })}
-      </Stack>
+      </Box>
 
       <AlertDialog
         isOpen={isDeleteAlertOpen}
