@@ -12,6 +12,6 @@ app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 //remove in prod
 app.use(morgan("dev"));
-app.use("/reference-guide/", appRouter);
+app.use("/infoportal", appRouter);
 export default app;
 //# sourceMappingURL=app.js.map
