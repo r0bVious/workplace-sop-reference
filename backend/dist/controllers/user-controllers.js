@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import { hash, compare } from "bcrypt";
+import bcrypt from "bcryptjs";
 import { createToken } from "../utils/token-manager.js";
 import { COOKIE_NAME } from "../utils/constants.js";
 const getAllUsers = async (req, res, next) => {
@@ -18,7 +18,7 @@ const createUser = async (req, res, next) => {
         const checkExistingUser = await User.findOne({ username });
         if (checkExistingUser)
             return res.status(401).send("User already exists.");
-        const hashedPassword = await hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
             username,
             position,
@@ -80,7 +80,7 @@ const loginUser = async (req, res, next) => {
         if (!loggingInUser) {
             return res.status(401).send("User does not exist.");
         }
-        const passwordCheck = await compare(password, loggingInUser.password);
+        const passwordCheck = await bcrypt.compare(password, loggingInUser.password);
         if (!passwordCheck) {
             return res.status(403).send("Password incorrect.");
         }
