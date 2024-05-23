@@ -7,7 +7,7 @@ config();
 const app = express();
 //middleware
 app.use(cors({
-    origin: "https://workplace-info-portal-fe.onrender.com:5173",
+    origin: "https://workplace-info-portal-fe.onrender.com",
     credentials: true,
 }));
 app.use(express.json());
