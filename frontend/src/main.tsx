@@ -8,6 +8,7 @@ import axios from "axios";
 
 axios.defaults.baseURL =
   "https://workplace-info-portal-be.onrender.com:5000/infoportal";
+// axios.defaults.baseURL = "http://localhost:5000/infoportal";
 axios.defaults.withCredentials = true;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

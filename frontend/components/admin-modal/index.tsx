@@ -9,7 +9,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-const AdminModal = ({ handleAdminModeChange }) => {
+interface AdminModalProps {
+  handleAdminModeChange: (mode: string) => void;
+}
+
+const AdminModal: React.FC<AdminModalProps> = ({ handleAdminModeChange }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (

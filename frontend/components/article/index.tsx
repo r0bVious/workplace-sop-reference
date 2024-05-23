@@ -1,7 +1,22 @@
 import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
 import CommentForm from "../comment-form";
 
-const Article = ({
+interface Comments {
+  _id: string;
+  username: string;
+  articleHeader: string;
+  commentContent: string;
+  dateCreated: Date;
+}
+
+interface ArticleProps {
+  articleHeader: string;
+  articleContent: string;
+  comments: Comments[];
+  isMobile?: boolean;
+}
+
+const Article: React.FC<ArticleProps> = ({
   articleHeader = "Header Text",
   articleContent = "Content Text",
   comments,
@@ -10,6 +25,7 @@ const Article = ({
   const desktopModeStyles = {
     background: "#333A3F",
     padding: "1rem 0 5rem",
+    minHeight: "100vh",
   };
 
   const mobileStyles = {

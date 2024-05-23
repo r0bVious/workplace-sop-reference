@@ -16,7 +16,7 @@ import {
   AlertDialogFooter,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import {
@@ -28,11 +28,23 @@ import {
 import useCustomToast from "../custom-hooks/customToast.ts";
 import "./index.css";
 
-const ArticleEditor = ({
+interface Article {
+  _id: string;
+  articleHeader: string;
+  articleContent: string;
+}
+
+interface ArticleEditorProps {
+  handleAdminModeChange: (AdminMode: string) => void;
+  handleArticleListChanged: () => void;
+  articles: Article[];
+  isMobile?: boolean;
+}
+
+const ArticleEditor: React.FC<ArticleEditorProps> = ({
   handleAdminModeChange,
   handleArticleListChanged,
   articles,
-  isMobile,
 }) => {
   const [articleContent, setArticleContent] = useState<string>("");
   const [articleHeader, setArticleHeader] = useState<string>("");
@@ -40,12 +52,6 @@ const ArticleEditor = ({
   const [articleList, setArticleList] = useState<Article[]>([]);
   const [editMode, setEditMode] = useState(false);
   const toast = useCustomToast();
-
-  interface Article {
-    _id: string;
-    articleHeader: string;
-    articleContent: string;
-  }
 
   const {
     isOpen: isDeleteAlertOpen,
@@ -70,7 +76,8 @@ const ArticleEditor = ({
     setArticleContent(articleContent);
   };
 
-  const handleHeaderChange = (e) => setArticleHeader(e.target.value);
+  const handleHeaderChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setArticleHeader(e.target.value);
 
   const handleEditClick = async (articleId: String) => {
     try {
@@ -102,7 +109,7 @@ const ArticleEditor = ({
       try {
         await editArticle(articleId, articleHeader, articleContent);
         toast({ title: "Article changes saved!", status: "success" });
-        handleAdminModeChange(null);
+        handleAdminModeChange("");
         handleArticleListChanged();
       } catch (error) {
         toast({ title: "Cannot save changes to article!", status: "error" });
@@ -112,7 +119,7 @@ const ArticleEditor = ({
       try {
         await newArticle(articleHeader, articleContent);
         toast({ title: "New article saved!", status: "success" });
-        handleAdminModeChange(null);
+        handleAdminModeChange("");
         handleArticleListChanged();
       } catch (error) {
         toast({ title: "Cannot save new article!", status: "error" });
@@ -156,6 +163,8 @@ const ArticleEditor = ({
     closeSubmitAlert();
   };
 
+  const leastDestructiveRef = useRef<HTMLElement | null>(null);
+
   return (
     <>
       <FormControl px={5} display="flex" flexDirection="column" gap={2}>
@@ -163,7 +172,7 @@ const ArticleEditor = ({
           colorScheme="red"
           size="lg"
           alignSelf="flex-start"
-          onClick={() => handleAdminModeChange(null)}
+          onClick={() => handleAdminModeChange("")}
           marginTop={2}
         >
           Go Back
@@ -279,7 +288,9 @@ const ArticleEditor = ({
 
       <AlertDialog
         isOpen={isDeleteAlertOpen}
-        leastDestructiveRef={null}
+        leastDestructiveRef={
+          leastDestructiveRef as React.MutableRefObject<HTMLElement | null>
+        }
         onClose={closeDeleteAlert}
       >
         <AlertDialogOverlay>
@@ -304,7 +315,9 @@ const ArticleEditor = ({
 
       <AlertDialog
         isOpen={isSubmitAlertOpen}
-        leastDestructiveRef={null}
+        leastDestructiveRef={
+          leastDestructiveRef as React.MutableRefObject<HTMLElement | null>
+        }
         onClose={closeSubmitAlert}
       >
         <AlertDialogOverlay>

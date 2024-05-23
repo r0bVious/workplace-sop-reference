@@ -12,7 +12,19 @@ import {
 } from "@chakra-ui/react";
 import AdminModal from "../../admin-modal";
 
-const MobileNavMenu = ({
+interface Article {
+  articleHeader: string;
+  articleContent: string;
+}
+
+interface MobileNavMenuProps {
+  articles: Article[];
+  handleNavButtonClick: (articleHeader: string, articleContent: string) => void;
+  handleAdminModeChange: (mode: string) => void;
+  isMobile?: boolean;
+}
+
+const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
   articles,
   handleNavButtonClick,
   handleAdminModeChange,

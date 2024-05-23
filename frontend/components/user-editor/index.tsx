@@ -1,8 +1,6 @@
 import {
   FormControl,
-  FormHelperText,
   FormLabel,
-  CloseButton,
   Text,
   Button,
   Input,
@@ -19,7 +17,7 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   getUsers,
   deleteUser,
@@ -33,7 +31,15 @@ interface User {
   username: string;
 }
 
-const UserEditor = ({ handleAdminModeChange, isMobile }) => {
+interface UserEditorProps {
+  handleAdminModeChange: (mode: string) => void;
+  isMobile?: boolean;
+}
+
+const UserEditor: React.FC<UserEditorProps> = ({
+  handleAdminModeChange,
+  isMobile,
+}) => {
   const [inputName, setInputName] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [inputPosition, setInputPosition] = useState("");
@@ -47,16 +53,16 @@ const UserEditor = ({ handleAdminModeChange, isMobile }) => {
   const [userToDeleteId, setUserToDeleteId] = useState("");
   const toast = useCustomToast();
 
-  const handleInputName = (e) => {
+  const handleInputName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputName(e.target.value);
   };
-  const handleInputPassword = (e) => {
+  const handleInputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputPassword(e.target.value);
   };
-  const handleInputPosition = (e) => {
+  const handleInputPosition = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputPosition(e.target.value);
   };
-  const handleInputAdminPriv = (e) => {
+  const handleInputAdminPriv = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputAdminPriv(e.target.checked);
   };
 
@@ -74,7 +80,7 @@ const UserEditor = ({ handleAdminModeChange, isMobile }) => {
     fetchUsers();
   }, []);
 
-  const handleDeleteClick = async (inUserId) => {
+  const handleDeleteClick = async (inUserId: string) => {
     setUserToDeleteId(inUserId);
     openDeleteAlert();
   };
@@ -132,13 +138,15 @@ const UserEditor = ({ handleAdminModeChange, isMobile }) => {
     }
   };
 
+  const leastDestructiveRef = useRef<HTMLElement | null>(null);
+
   return (
     <div>
       <Button
         colorScheme="red"
         size="lg"
         alignSelf="flex-start"
-        onClick={() => handleAdminModeChange(null)}
+        onClick={() => handleAdminModeChange("")}
         marginTop={2}
         ml={5}
       >
@@ -254,7 +262,9 @@ const UserEditor = ({ handleAdminModeChange, isMobile }) => {
         })}
         <AlertDialog
           isOpen={isDeleteAlertOpen}
-          leastDestructiveRef={null}
+          leastDestructiveRef={
+            leastDestructiveRef as React.MutableRefObject<HTMLElement | null>
+          }
           onClose={closeDeleteAlert}
         >
           <AlertDialogOverlay>

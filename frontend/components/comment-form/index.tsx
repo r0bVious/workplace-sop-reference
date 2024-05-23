@@ -14,7 +14,7 @@ import {
   AlertDialogFooter,
 } from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   deleteComment,
   getComments,
@@ -22,7 +22,21 @@ import {
 } from "../../helpers/api-communicator.ts";
 import useCustomToast from "../custom-hooks/customToast.ts";
 
-const CommentForm = ({
+interface Comment {
+  _id: string;
+  username: string;
+  articleHeader: string;
+  commentContent: string;
+  dateCreated: Date;
+}
+
+interface CommentFormProps {
+  comments: Comment[];
+  articleHeader: string;
+  isMobile?: boolean;
+}
+
+const CommentForm: React.FC<CommentFormProps> = ({
   comments: initialComments,
   articleHeader,
   isMobile,
@@ -41,7 +55,7 @@ const CommentForm = ({
     onOpen: openSubmitAlert,
     onClose: closeSubmitAlert,
   } = useDisclosure();
-  const [commentToDeleteId, setCommentToDeleteId] = useState(null);
+  const [commentToDeleteId, setCommentToDeleteId] = useState<string>("");
   const toast = useCustomToast();
 
   useEffect(() => {
@@ -57,7 +71,8 @@ const CommentForm = ({
     }
   };
 
-  const handleInputChange = (e) => setCommentContent(e.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setCommentContent(e.target.value);
 
   const handleSubmit = async () => {
     if (commentContent.trim() === "") {
@@ -74,11 +89,13 @@ const CommentForm = ({
     closeSubmitAlert();
     const dateCreated = new Date();
     try {
-      await newComment(username, articleHeader, commentContent, dateCreated);
-      setCommentContent("");
-      const newCommentList = await refreshComments(articleHeader);
-      setComments(newCommentList);
-      toast({ title: "Comment posted!", status: "success" });
+      if (username) {
+        await newComment(username, articleHeader, commentContent, dateCreated);
+        setCommentContent("");
+        const newCommentList = await refreshComments(articleHeader);
+        setComments(newCommentList);
+        toast({ title: "Comment posted!", status: "success" });
+      } else toast({ title: "User not authenticated!", status: "error" });
     } catch (error) {
       console.log(error);
       toast({ title: "Comment posting failed!", status: "error" });
@@ -89,7 +106,7 @@ const CommentForm = ({
     closeSubmitAlert();
   };
 
-  const handleClick = async (commentId) => {
+  const handleClick = async (commentId: string) => {
     setCommentToDeleteId(commentId);
     openDeleteAlert();
   };
@@ -109,18 +126,21 @@ const CommentForm = ({
 
   const handleCancelDelete = () => {
     closeDeleteAlert();
-    setCommentToDeleteId(null);
+    setCommentToDeleteId("");
   };
 
-  const formatDate = (dateString: String): string => {
-    const date = new Date(dateString.toString());
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
+  const formatDate = (date: Date): string => {
+    const dateString = date.toString();
+    const parsedDate = new Date(dateString);
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(parsedDate.getDate()).padStart(2, "0");
+    const hours = String(parsedDate.getHours()).padStart(2, "0");
+    const minutes = String(parsedDate.getMinutes()).padStart(2, "0");
     return `${year}/${month}/${day} @ ${hours}:${minutes}`;
   };
+
+  const leastDestructiveRef = useRef<HTMLElement | null>(null);
 
   return (
     <Stack
@@ -181,7 +201,9 @@ const CommentForm = ({
 
       <AlertDialog
         isOpen={isDeleteAlertOpen}
-        leastDestructiveRef={null}
+        leastDestructiveRef={
+          leastDestructiveRef as React.MutableRefObject<HTMLElement | null>
+        }
         onClose={closeDeleteAlert}
       >
         <AlertDialogOverlay>
@@ -206,7 +228,9 @@ const CommentForm = ({
 
       <AlertDialog
         isOpen={isSubmitAlertOpen}
-        leastDestructiveRef={null}
+        leastDestructiveRef={
+          leastDestructiveRef as React.MutableRefObject<HTMLElement | null>
+        }
         onClose={closeSubmitAlert}
       >
         <AlertDialogOverlay>

@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, FormControl, Input, VStack } from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext";
 import useCustomToast from "../custom-hooks/customToast";
 

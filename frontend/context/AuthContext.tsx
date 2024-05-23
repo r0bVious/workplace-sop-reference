@@ -55,8 +55,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signup = async (username: string, password: string) => {};
-
   const logout = async () => {
     await logoutUser();
     setIsLoggedIn(false);
@@ -70,7 +68,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isAdmin,
     login,
     logout,
-    signup,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

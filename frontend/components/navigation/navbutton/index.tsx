@@ -1,9 +1,10 @@
 import { Button, Text } from "@chakra-ui/react";
 
 interface NavButtonProps {
-  articleHeader?: string;
-  articleContent?: string;
-  onClick?: (articleHeader: string, articleContent: string) => void;
+  articleHeader: string;
+  articleContent: string;
+  onClick: (articleHeader: string, articleContent: string) => void;
+  onCloseDrawer: () => void;
 }
 
 const NavButton = ({

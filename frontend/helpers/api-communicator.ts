@@ -45,7 +45,7 @@ const getArticles = async () => {
   return data;
 };
 
-const getArticle = async (articleId) => {
+const getArticle = async (articleId: String) => {
   const res = await axios.get(`articles/article/${articleId}`);
   if (res.status !== 200) {
     throw new Error("Unable to retrieve article");

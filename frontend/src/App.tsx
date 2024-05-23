@@ -22,15 +22,18 @@ function App() {
     articleContent: "",
   });
   const [comments, setComments] = useState([]);
-  const [adminMode, setAdminMode] = useState(null);
+  const [adminMode, setAdminMode] = useState("");
   const [articleListChanged, setArticleListChanged] = useState(false);
 
-  const handleNavButtonClick = (articleHeader, articleContent) => {
+  const handleNavButtonClick = (
+    articleHeader: string,
+    articleContent: string
+  ) => {
     setSelectedArticle({ articleHeader, articleContent });
     setDisplayArticle(true);
   };
 
-  const handleAdminModeChange = (mode) => {
+  const handleAdminModeChange = (mode: string) => {
     setAdminMode(mode);
   };
 
@@ -56,7 +59,7 @@ function App() {
 
   return (
     <>
-      {isLoggedIn && adminMode ? (
+      {isLoggedIn && adminMode.length ? (
         adminMode === "articles" ? (
           <ArticleEditor
             handleAdminModeChange={handleAdminModeChange}
