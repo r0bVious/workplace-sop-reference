@@ -249,7 +249,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
         mx={5}
         paddingBottom={5}
       >
-        {articleList.map((article, index) => {
+        {articleList.map((article) => {
           return (
             <Card
               key={article._id}
