@@ -8,7 +8,12 @@ config();
 const app = express();
 
 //middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: "https://workplace-info-portal-fe.onrender.com:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
