@@ -89,7 +89,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     res.clearCookie(COOKIE_NAME, {
-      domain: ".onrender.com/",
+      domain: ".workplace-info-portal-fe.onrender.com",
       httpOnly: true,
       signed: true,
       path: "/",
@@ -106,7 +106,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
 
     res.cookie(COOKIE_NAME, newToken, {
       path: "/",
-      domain: ".onrender.com/",
+      domain: ".workplace-info-portal-fe.onrender.com",
       expires,
       httpOnly: true,
       signed: true,
@@ -136,7 +136,7 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     res.clearCookie(COOKIE_NAME, {
-      domain: ".onrender.com/",
+      domain: ".workplace-info-portal-fe.onrender.com",
       httpOnly: true,
       signed: true,
       path: "/",
