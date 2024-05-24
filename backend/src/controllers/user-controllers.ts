@@ -111,7 +111,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
       httpOnly: true,
       signed: true,
       secure: true,
-      sameSite: `none`,
+      sameSite: "none",
     });
 
     return res.status(200).json({
@@ -141,7 +141,7 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
       signed: true,
       path: "/",
       secure: true,
-      sameSite: `none`,
+      sameSite: "none",
     });
 
     return res
