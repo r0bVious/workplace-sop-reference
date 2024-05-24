@@ -12,11 +12,6 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
-// Custom middleware to set SameSite attribute for specific cookies
-app.use((req, res, next) => {
-    res.set("Set-Cookie", `auth_token=value; SameSite=None; Secure`);
-    next();
-});
 app.use("/infoportal", appRouter);
 export default app;
 //# sourceMappingURL=app.js.map

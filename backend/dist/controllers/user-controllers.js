@@ -85,7 +85,7 @@ const loginUser = async (req, res, next) => {
             return res.status(403).send("Password incorrect.");
         }
         res.clearCookie(COOKIE_NAME, {
-            domain: "localhost",
+            domain: "https://workplace-info-portal-fe.onrender.com/",
             httpOnly: true,
             signed: true,
             path: "/",
@@ -95,10 +95,12 @@ const loginUser = async (req, res, next) => {
         expires.setDate(expires.getDate() + 7);
         res.cookie(COOKIE_NAME, newToken, {
             path: "/",
-            domain: "localhost",
+            domain: "https://workplace-info-portal-fe.onrender.com/",
             expires,
             httpOnly: true,
             signed: true,
+            secure: true,
+            sameSite: `none`,
         });
         return res.status(200).json({
             message: "OK",
@@ -125,6 +127,8 @@ const logoutUser = async (req, res, next) => {
             httpOnly: true,
             signed: true,
             path: "/",
+            secure: true,
+            sameSite: `none`,
         });
         return res
             .status(200)
