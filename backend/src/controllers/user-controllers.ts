@@ -140,8 +140,6 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
       httpOnly: true,
       signed: true,
       path: "/",
-      secure: true,
-      sameSite: "none",
     });
 
     return res
