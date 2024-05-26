@@ -100,7 +100,7 @@ const loginUser = async (req, res, next) => {
             httpOnly: true,
             signed: true,
             secure: true,
-            sameSite: "None",
+            sameSite: "none",
         });
         return res.status(200).json({
             message: "OK",
