@@ -84,11 +84,11 @@ const loginUser = async (req, res, next) => {
         if (!passwordCheck) {
             return res.status(403).send("Password incorrect.");
         }
-        res.clearCookie(COOKIE_NAME, {
-            httpOnly: true,
-            signed: true,
-            path: "/",
-        });
+        // res.clearCookie(COOKIE_NAME, {
+        //   httpOnly: true,
+        //   signed: true,
+        //   path: "/",
+        // });
         const newToken = createToken(loggingInUser._id.toString(), loggingInUser.username, "7d");
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);

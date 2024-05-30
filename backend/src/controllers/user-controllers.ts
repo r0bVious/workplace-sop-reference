@@ -88,11 +88,11 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(403).send("Password incorrect.");
     }
 
-    res.clearCookie(COOKIE_NAME, {
-      httpOnly: true,
-      signed: true,
-      path: "/",
-    });
+    // res.clearCookie(COOKIE_NAME, {
+    //   httpOnly: true,
+    //   signed: true,
+    //   path: "/",
+    // });
 
     const newToken = createToken(
       loggingInUser._id.toString(),
