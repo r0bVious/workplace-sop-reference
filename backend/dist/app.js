@@ -8,6 +8,7 @@ const app = express();
 // Middleware
 app.use(cors({
     origin: "https://workplace-info-portal-fe.onrender.com",
+    // origin: "http://localhost:5173",
     credentials: true,
 }));
 app.use(express.json());

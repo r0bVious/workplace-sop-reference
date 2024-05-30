@@ -89,7 +89,6 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     res.clearCookie(COOKIE_NAME, {
-      domain: ".onrender.com",
       httpOnly: true,
       signed: true,
       path: "/",
@@ -104,15 +103,14 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
 
-    res.cookie(COOKIE_NAME, newToken, {
-      path: "/",
-      domain: ".onrender.com",
-      expires,
-      httpOnly: true,
-      signed: true,
-      secure: true,
-      sameSite: "none",
-    });
+    // res.cookie(COOKIE_NAME, newToken, {
+    //   path: "/",
+    //   expires,
+    //   httpOnly: true,
+    //   signed: true,
+    //   secure: true,
+    //   sameSite: "none",
+    // });
 
     return res.status(200).json({
       message: "OK",
@@ -136,7 +134,6 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     res.clearCookie(COOKIE_NAME, {
-      domain: ".onrender.com",
       httpOnly: true,
       signed: true,
       path: "/",

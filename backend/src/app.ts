@@ -11,6 +11,7 @@ const app = express();
 app.use(
   cors({
     origin: "https://workplace-info-portal-fe.onrender.com",
+    // origin: "http://localhost:5173",
     credentials: true,
   })
 );
