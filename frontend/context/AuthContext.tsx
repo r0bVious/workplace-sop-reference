@@ -31,13 +31,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     async function checkStatus() {
-      const data = await checkAuthStatus();
-      if (data) {
-        setUser({ username: data.username });
-        setIsLoggedIn(true);
-        if (data.adminPriv) {
-          setIsAdmin(true);
+      try {
+        const data = await checkAuthStatus();
+        if (data) {
+          setUser({ username: data.username });
+          setIsLoggedIn(true);
+          if (data.adminPriv) {
+            setIsAdmin(true);
+          }
         }
+      } catch (error) {
+        console.error("Nope.");
       }
     }
     checkStatus();
