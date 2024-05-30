@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const handleErrors = (error: Error) => {
+const handleErrors = (/*error: Error*/) => {
   // console.log("api-communicator:", error);
 };
 
