@@ -100,6 +100,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     expires.setDate(expires.getDate() + 7);
 
     res.cookie(COOKIE_NAME, newToken, {
+      domain: ".onrender.com",
       path: "/",
       expires,
       httpOnly: true,
@@ -129,11 +130,7 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).send("Permissions mismatch");
     }
 
-    res.clearCookie(COOKIE_NAME, {
-      httpOnly: true,
-      signed: true,
-      path: "/",
-    });
+    res.clearCookie(COOKIE_NAME);
 
     return res
       .status(200)
