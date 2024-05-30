@@ -1,5 +1,9 @@
 import axios from "axios";
 
+const handleErrors = (error: Error) => {
+  // console.log("api-communicator:", error);
+};
+
 const getUsers = async () => {
   const res = await axios.get("/user");
   if (res.status !== 200) {
@@ -18,13 +22,18 @@ const loginUser = async (username: string, password: string) => {
   return data;
 };
 
-const checkAuthStatus = async () => {
-  const res = await axios.get("/user/auth-status");
-  if (res.status !== 200) {
-    throw new Error("Unable to verify authorization.");
-  }
-  const data = await res.data;
-  return data;
+const checkAuthStatus = () => {
+  // const res = await axios.get("/user/auth-status");
+  // if (res.status !== 200) {
+  //   throw new Error("Unable to verify authorization.");
+  // }
+  // const data = await res.data;
+  // return data;
+
+  return axios
+    .get("/user/auth-status")
+    .then((res) => res.data)
+    .catch(handleErrors);
 };
 
 const logoutUser = async () => {

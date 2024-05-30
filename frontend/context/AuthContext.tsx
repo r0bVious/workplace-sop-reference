@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         }
       } catch (error) {
-        console.error("Nope.");
+        console.error("Fix me later - axios error", error);
       }
     }
     checkStatus();
