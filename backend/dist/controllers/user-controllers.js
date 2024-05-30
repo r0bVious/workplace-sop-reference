@@ -89,8 +89,7 @@ const loginUser = async (req, res, next) => {
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
         res.cookie(COOKIE_NAME, newToken, {
-            // domain: "workplace-info-portal-be.onrender.com",
-            domain: "onrender.com",
+            domain: "workplace-info-portal-be.onrender.com",
             path: "/",
             expires,
             httpOnly: true,
