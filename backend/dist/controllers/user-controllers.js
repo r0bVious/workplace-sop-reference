@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { createToken } from "../utils/token-manager.js";
 import { COOKIE_NAME } from "../utils/constants.js";
 // const domain = "localhost";
-const domain = "workplace-info-portal-be.onrender.com";
+const domain = ".onrender.com";
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await User.find();
@@ -90,7 +90,7 @@ const loginUser = async (req, res, next) => {
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
         res.cookie(COOKIE_NAME, newToken, {
-            domain: "workplace-info-portal-be.onrender.com",
+            domain: domain,
             path: "/",
             expires,
             httpOnly: true,
