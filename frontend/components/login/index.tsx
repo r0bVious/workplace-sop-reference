@@ -26,7 +26,7 @@ const Login = () => {
   };
 
   return (
-    <VStack padding={10} spacing={6}>
+    <VStack padding={10} spacing={6} minWidth={"30dvw"}>
       <FormControl>
         <Input
           id="username"

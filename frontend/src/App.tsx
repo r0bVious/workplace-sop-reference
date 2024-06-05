@@ -57,6 +57,26 @@ function App() {
     }
   }, [isLoggedIn, articleListChanged]);
 
+  const desktopModeStyles = {
+    background: "#333A3F",
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
+  const desktopStyles = {
+    padding: "5rem",
+    minWidth: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "white",
+    maxWidth: "75%",
+    margin: "0 auto",
+    boxShadow: "5px 5px 10px black",
+  };
+
   return (
     <>
       {isLoggedIn && adminMode.length ? (
@@ -86,9 +106,21 @@ function App() {
                   isMobile={isMobile}
                 />
               ) : (
-                <>
-                  <Landing />
-                </>
+                <div style={!isMobile ? desktopModeStyles : {}}>
+                  <div
+                    style={
+                      !isMobile
+                        ? {
+                            ...desktopStyles,
+                            flexDirection: "column",
+                            maxWidth: "30%",
+                          }
+                        : {}
+                    }
+                  >
+                    <Landing />
+                  </div>
+                </div>
               )}
               <MobileNavMenu
                 articles={articles}
@@ -99,10 +131,12 @@ function App() {
             </>
           ) : (
             //false
-            <>
-              <Hero />
-              <Login />
-            </>
+            <div style={!isMobile ? desktopModeStyles : {}}>
+              <div style={!isMobile ? desktopStyles : {}}>
+                <Hero />
+                <Login />
+              </div>
+            </div>
           )}
         </>
       )}

@@ -1,23 +1,17 @@
-import { Text } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 
 const Landing = () => {
   return (
-    <>
+    <VStack justifyContent={"center"} alignItems={"center"} py={10}>
       <Text
         fontSize={"xxx-large"}
         align={"center"}
-        my="2rem"
         fontWeight={"bolder"}
+        mb={"2rem"}
       >
         Welcome!
       </Text>
-      <Text
-        fontSize="large"
-        mt={10}
-        mx={5}
-        textIndent={"3rem"}
-        lineHeight={"2rem"}
-      >
+      <Text fontSize="large" mx={5} textIndent={"3rem"} lineHeight={"2rem"}>
         Hello! The goal of this resource is to be an overview of the
         responsibilities and special events that sometimes can cause confusion
         amongst new teachers. It is by no means totally comprehensive, as each
@@ -37,7 +31,7 @@ const Landing = () => {
         will always be your Korean Co-Teacher (KT), other Foreign Teachers (FT),
         and your supervisor.
       </Text>
-    </>
+    </VStack>
   );
 };
 
