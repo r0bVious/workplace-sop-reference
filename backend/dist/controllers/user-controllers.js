@@ -2,8 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import { createToken } from "../utils/token-manager.js";
 import { COOKIE_NAME } from "../utils/constants.js";
-const domain = "localhost";
-// const domain = "workplace-info-portal-be.onrender.com";
+// const domain = "localhost";
+const domain = "workplace-info-portal-be.onrender.com";
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await User.find();
