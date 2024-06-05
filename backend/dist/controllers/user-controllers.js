@@ -86,12 +86,11 @@ const loginUser = async (req, res, next) => {
         if (!passwordCheck) {
             return res.status(403).send("Password incorrect.");
         }
-        // res.clearCookie(COOKIE_NAME);
         const newToken = createToken(loggingInUser._id.toString(), loggingInUser.username, "7d");
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
         res.cookie(COOKIE_NAME, newToken, {
-            domain: domain,
+            domain: "workplace-info-portal-be.onrender.com",
             path: "/",
             expires,
             httpOnly: true,
