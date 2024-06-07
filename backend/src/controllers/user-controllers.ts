@@ -131,7 +131,13 @@ const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).send("Permissions mismatch");
     }
 
-    res.clearCookie(COOKIE_NAME);
+    res.clearCookie(COOKIE_NAME, {
+      domain: myDomain,
+      path: "/",
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
 
     return res
       .status(200)
