@@ -26,33 +26,35 @@ const Login = () => {
   };
 
   return (
-    <VStack padding={10} spacing={6} minWidth={"30dvw"}>
-      <FormControl>
-        <Input
-          id="username"
-          value={username}
-          type="text"
-          placeholder="Enter username..."
-          onChange={(e) => setUsername(e.target.value)}
-          size="lg"
-          variant="flushed"
-        />
-      </FormControl>
-      <FormControl>
-        <Input
-          id="password"
-          value={password}
-          type="password"
-          placeholder="Enter password..."
-          onChange={(e) => setPassword(e.target.value)}
-          size="lg"
-          variant="flushed"
-        />
-      </FormControl>
-      <Button colorScheme="blue" onClick={handleSubmit} size="lg">
-        Log In
-      </Button>
-    </VStack>
+    <form onSubmit={handleSubmit}>
+      <VStack padding={10} spacing={6} minWidth={"30dvw"}>
+        <FormControl>
+          <Input
+            id="username"
+            value={username}
+            type="text"
+            placeholder="Enter username..."
+            onChange={(e) => setUsername(e.target.value)}
+            size="lg"
+            variant="flushed"
+          />
+        </FormControl>
+        <FormControl>
+          <Input
+            id="password"
+            value={password}
+            type="password"
+            placeholder="Enter password..."
+            onChange={(e) => setPassword(e.target.value)}
+            size="lg"
+            variant="flushed"
+          />
+        </FormControl>
+        <Button colorScheme="blue" onClick={handleSubmit} size="lg">
+          Log In
+        </Button>
+      </VStack>
+    </form>
   );
 };
 
