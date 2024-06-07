@@ -18,7 +18,7 @@ const NavButton = ({
       onClick(articleHeader, articleContent);
     }
     if (onCloseDrawer) {
-      onCloseDrawer(); // Call onCloseDrawer when the button is clicked
+      onCloseDrawer();
     }
   };
 

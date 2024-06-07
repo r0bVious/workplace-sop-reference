@@ -9,8 +9,10 @@ import {
   DrawerOverlay,
   DrawerContent,
   Box,
+  Grid,
 } from "@chakra-ui/react";
 import AdminModal from "../../admin-modal";
+import { FaHome } from "react-icons/fa";
 
 interface Article {
   articleHeader: string;
@@ -20,6 +22,7 @@ interface Article {
 interface MobileNavMenuProps {
   articles: Article[];
   handleNavButtonClick: (articleHeader: string, articleContent: string) => void;
+  handleHomeButtonClick: () => void;
   handleAdminModeChange: (mode: string) => void;
   isMobile?: boolean;
 }
@@ -28,6 +31,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
   articles,
   handleNavButtonClick,
   handleAdminModeChange,
+  handleHomeButtonClick,
   isMobile,
 }) => {
   const isAdmin = useAuth()?.isAdmin;
@@ -43,31 +47,47 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
     onClose();
   };
 
+  const handleHomeButtonCloseClick = () => {
+    handleHomeButtonClick();
+    handleCloseDrawer();
+  };
+
   return (
     <>
       <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <Box bg="#3182ce" height={"3px"}></Box>
-          <DrawerBody
-            display="grid"
-            gridTemplateColumns={
-              isMobile
-                ? "repeat(3, 1fr)"
-                : "repeat(auto-fit, minmax(200px, 1fr))"
-            }
-            gap="1rem"
-            my={5}
-          >
-            {articles.map((article, index) => (
-              <NavButton
-                key={index}
-                articleHeader={article.articleHeader}
-                articleContent={article.articleContent}
-                onClick={handleNavButtonClick}
-                onCloseDrawer={handleCloseDrawer}
-              />
-            ))}
+          <DrawerBody display="flex" flexDirection="column" alignItems="center">
+            <Button
+              alignSelf={"center"}
+              size={"lg"}
+              px={10}
+              colorScheme={"green"}
+              onClick={handleHomeButtonCloseClick}
+            >
+              <FaHome />
+            </Button>
+            <Grid
+              width={"100%"}
+              templateColumns={
+                isMobile
+                  ? "repeat(3, 1fr)"
+                  : "repeat(auto-fit, minmax(200px, 1fr))"
+              }
+              gap={"1rem"}
+              my={5}
+            >
+              {articles.map((article, index) => (
+                <NavButton
+                  key={index}
+                  articleHeader={article.articleHeader}
+                  articleContent={article.articleContent}
+                  onClick={handleNavButtonClick}
+                  onCloseDrawer={handleCloseDrawer}
+                />
+              ))}
+            </Grid>
           </DrawerBody>
           <Box display="flex" justifyContent={"center"} paddingX={5}>
             <Button

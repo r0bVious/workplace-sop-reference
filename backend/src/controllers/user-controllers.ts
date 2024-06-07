@@ -73,6 +73,9 @@ const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const myDomain = "workplace-info-portal-be.onrender.com";
+// const myDomain = "localhost";
+
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { username, password } = req.body;
@@ -98,7 +101,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     expires.setDate(expires.getDate() + 7);
 
     res.cookie(COOKIE_NAME, newToken, {
-      domain: "workplace-info-portal-be.onrender.com",
+      domain: myDomain,
       path: "/",
       expires,
       httpOnly: true,

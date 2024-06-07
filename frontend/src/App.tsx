@@ -33,6 +33,10 @@ function App() {
     setDisplayArticle(true);
   };
 
+  const handleHomeButtonClick = () => {
+    setDisplayArticle(false);
+  };
+
   const handleAdminModeChange = (mode: string) => {
     setAdminMode(mode);
   };
@@ -125,6 +129,7 @@ function App() {
               <MobileNavMenu
                 articles={articles}
                 handleNavButtonClick={handleNavButtonClick}
+                handleHomeButtonClick={handleHomeButtonClick}
                 handleAdminModeChange={setAdminMode}
                 isMobile={isMobile}
               />
