@@ -38,9 +38,8 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleLogOutClick = async () => {
     logoutUser();
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    window.location.reload();
   };
 
   const handleCloseDrawer = () => {
