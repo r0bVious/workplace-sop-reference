@@ -116,7 +116,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({
         width={isMobile ? "100%" : "25%"}
         height="10vh"
         fontSize="3.5rem"
-        borderRadius={isMobile ? "0" : "5px 5px 0px 0px"}
+        borderRadius={isMobile ? "0" : "25px 25px 0px 0px"}
         boxShadow={isMobile ? "0" : "5px 5px 10px #333333"}
       >
         <Box mb={4}>︽</Box>

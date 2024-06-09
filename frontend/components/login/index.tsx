@@ -9,7 +9,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const toast = useCustomToast();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     try {
       await auth?.login(username, password);
       toast({
@@ -50,7 +51,7 @@ const Login = () => {
             variant="flushed"
           />
         </FormControl>
-        <Button colorScheme="blue" onClick={handleSubmit} size="lg">
+        <Button colorScheme="blue" type="submit" size="lg">
           Log In
         </Button>
       </VStack>

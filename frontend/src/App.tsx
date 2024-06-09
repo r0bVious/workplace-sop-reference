@@ -79,6 +79,7 @@ function App() {
     maxWidth: "75%",
     margin: "0 auto",
     boxShadow: "5px 5px 10px black",
+    borderRadius: "15px",
   };
 
   return (
