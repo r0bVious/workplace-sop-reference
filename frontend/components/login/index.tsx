@@ -13,7 +13,7 @@ import useCustomToast from "../custom-hooks/customToast";
 const Login = () => {
   const auth = useAuth();
   const [username, setUsername] = useState("Visitor");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("ilikerob");
   const [loading, setLoading] = useState(false);
   const toast = useCustomToast();
 
@@ -35,8 +35,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
-  setPassword("ilikerob");
 
   return (
     <form onSubmit={handleSubmit}>
