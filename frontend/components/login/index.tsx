@@ -19,6 +19,7 @@ const Login = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     try {
       await auth?.login(username, password);
       toast({
@@ -31,6 +32,7 @@ const Login = () => {
         title: "Login Failed!",
         status: "error",
       });
+      setLoading(false);
     }
   };
 
