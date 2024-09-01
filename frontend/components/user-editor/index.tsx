@@ -125,7 +125,6 @@ const UserEditor: React.FC<UserEditorProps> = ({
         duration: 2000,
         isClosable: true,
       });
-      console.log("click");
       fetchUsers();
     } catch (error) {
       console.log(error);

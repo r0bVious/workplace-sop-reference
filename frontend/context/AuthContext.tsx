@@ -54,7 +54,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoggedIn(true);
       if (data.adminPriv) {
         setIsAdmin(true);
-        console.log("Admin setting to true...");
       }
     }
   };

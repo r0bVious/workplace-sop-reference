@@ -1,12 +1,20 @@
 import { useState } from "react";
-import { Button, FormControl, Input, VStack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  FormControl,
+  Input,
+  VStack,
+  Text,
+  Spinner,
+} from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext";
 import useCustomToast from "../custom-hooks/customToast";
 
 const Login = () => {
   const auth = useAuth();
   const [username, setUsername] = useState("Visitor");
-  const [password, setPassword] = useState("ilikerob");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const toast = useCustomToast();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -25,6 +33,8 @@ const Login = () => {
       });
     }
   };
+
+  setPassword("ilikerob");
 
   return (
     <form onSubmit={handleSubmit}>
@@ -51,9 +61,13 @@ const Login = () => {
             variant="flushed"
           />
         </FormControl>
-        <Button colorScheme="blue" type="submit" size="lg">
-          Log In
-        </Button>
+        {loading ? (
+          <Spinner color="blue.500" />
+        ) : (
+          <Button colorScheme="blue" type="submit" size="lg">
+            Log In
+          </Button>
+        )}
         <Text fontSize="small" fontStyle="italic">
           This is free hosting, so please wait up to a minute for login to
           complete!
