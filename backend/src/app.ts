@@ -21,7 +21,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use("/infoportal", appRouter);
 
 //keeping the server from spinning down - it's just a little demo project!
-const url = `https://workplace-info-portal-be.onrender.com/wake`;
+const url = `https://workplace-info-portal-be.onrender.com/infoportal/wake`;
 const interval = 30000;
 
 function reloadWebsite() {
